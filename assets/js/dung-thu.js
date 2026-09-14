@@ -421,6 +421,7 @@
       '<p class="dt-saved-note">Ước lượng từ tình huống mẫu, không phải cam kết.</p></div>' +
       '<div class="dt-caught"><p class="dt-caught-title">Bạn vừa bắt được 1 lỗi trước khi dùng</p><p>' + esc(t.baiHoc) + '</p>' +
       '<p class="dt-caught-foot">Đây là lý do mỗi gói nghề đi kèm checklist: AI làm nhanh phần lặp lại, người làm nghề giữ quyền quyết định.</p></div>' +
+      '<p class="dt-mock-note">Bạn vừa xem bản mô phỏng: kết quả được soạn sẵn, không có AI thật xử lý. Với gói nghề, bạn làm việc thật trên chính tài khoản AI của mình.</p>' +
       '</div>' +
       '<div class="dt-next"><h3 class="dt-next-h">Bước tiếp theo</h3>' +
       n.tiepTheo.map(function (o) {

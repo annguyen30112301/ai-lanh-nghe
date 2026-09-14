@@ -174,7 +174,10 @@ p.is-changed, .dt-a.is-changed, .dt-summary.is-changed { padding: 4px 8px; borde
 .dt-caught p { margin: 0; font-size: 16.5px !important; line-height: 1.6; }
 .dt-caught-title { font-weight: 600; color: var(--color-accent-800); }
 .dt-caught-foot { color: var(--color-neutral-700); font-size: 15px !important; }
+.dt-mock-note { margin: 0; font-size: 15px !important; color: var(--color-neutral-700); }
 .dt-next { display: grid; gap: 10px; }
+/* chừa chỗ cho hàng nút nổi dưới đáy */
+.dt { padding-bottom: 96px !important; }
 .dt-next-h { margin: 0 0 4px; font-size: 14px !important; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-neutral-700); font-weight: 600; }
 .dt-next-opt { display: grid; gap: 4px; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--color-divider); background: #fff; text-decoration: none; color: var(--color-text); }
 .dt-next-opt:hover { border-color: var(--color-accent-500); }

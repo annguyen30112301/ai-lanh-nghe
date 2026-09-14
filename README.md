@@ -60,8 +60,12 @@ trong `site.js` dưới dạng hằng `STAFF` và `QUEUE` — thay bằng API th
 
 ## Bàn thử việc (`dung-thu.html`)
 
-Khách giao cho AI một việc thật của nghề mình rồi tự kiểm tra kết quả. Kết quả được
-**soạn sẵn** trong `assets/js/dung-thu-data.js`; trang không gọi AI thật, không lưu dữ liệu.
+Khách giao cho AI một việc thật của nghề mình rồi tự kiểm tra kết quả. Đây là **mockup UI**:
+kết quả được soạn sẵn trong `assets/js/dung-thu-data.js`, không gọi AI thật, không đăng nhập,
+không lưu dữ liệu.
+
+Khác với **gói Miễn phí (Nhập nghề 0 đ)** ở trang Bảng giá: gói Miễn phí yêu cầu đăng nhập,
+thanh toán 0 đ và thực hành trên AI thật của khách. Bước cuối của trang dùng thử dẫn sang đó.
 
 Luồng 4 bước: **Chọn việc → Đầu vào (AI xử lý) → Kiểm tra → Kết quả.**
 
@@ -80,8 +84,8 @@ Luồng 4 bước: **Chọn việc → Đầu vào (AI xử lý) → Kiểm tra 
 - Link vào thẳng một tình huống: `dung-thu.html#<nghề>/<tình huống>`, ví dụ
   `#mua-hang/bao-gia`, `#giang-day/nhan-xet`. Chỉ `#mua-hang` thì mở bước chọn việc với nghề đó.
 - Lối vào: nút “Thử ngay →”, “Xem AI làm được gì →”, “Xem thử một tình huống” trên trang
-  Mua hàng; “Xem thử một tình huống →” trên trang Giảng dạy; nút nổi **Dùng thử 2 phút**
-  ở các trang giới thiệu. Trên trang dùng thử, nút nổi dẫn tới bảng điều khiển demo.
+  Mua hàng; “Xem thử một tình huống →” trên trang Giảng dạy; nút nổi **Dùng thử** ở giữa đáy
+  màn hình trên mọi trang (trừ chính trang dùng thử).
 - Trên điện thoại, bảng kết quả chuyển thành dạng xếp chồng (nhãn bên trái, giá trị bên phải)
   để không phải cuộn ngang.
 
@@ -178,6 +182,7 @@ Lớp `.image-placeholder` trong `site.css` vẫn giữ lại để dùng khi th
   RGB, phần trong suốt sẽ thành nền đen.
 - Ảnh nền trang Gói nghề có dòng chữ slogan cũ vẽ sẵn trên tấm bảng trong ảnh — cần
   thay ảnh khác nếu muốn đồng bộ hoàn toàn.
-- Nút nổi `#modeswitch` ở góc phải dưới thay cho nút “Dùng thử” trên menu: trên các
-  trang giới thiệu nó là “Dùng thử 2 phút” dẫn tới `dung-thu.html`, trên trang dùng thử
-  dẫn tới bảng điều khiển demo, trên bảng điều khiển thì dẫn về trang chủ. Bỏ nút này khỏi menu giúp logo và menu nằm gọn trên một hàng.
+- Hàng nút nổi `.float-bar` dưới đáy màn hình thay cho nút “Dùng thử” trên menu:
+  `.float-trial` **Dùng thử** ở giữa (dẫn tới `dung-thu.html`) và `#modeswitch` ở góc phải
+  (**Xem bảng điều khiển (demo)**; trên bảng điều khiển là **← Về trang giới thiệu**). Trang dùng
+  thử chỉ có nút demo. Màn hình dưới 640px thì hai nút đứng cạnh nhau ở giữa. Bỏ nút này khỏi menu giúp logo và menu nằm gọn trên một hàng.
