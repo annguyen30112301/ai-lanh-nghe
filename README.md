@@ -102,3 +102,8 @@ Lớp `.image-placeholder` trong `site.css` vẫn giữ lại để dùng khi th
 - Ảnh đi kèm bản thiết kế gốc cũng đã được nén WebP theo cùng tham số, nên toàn bộ
   site chỉ khoảng 1,9MB thay vì 13MB. Riêng `logo.png` giữ định dạng PNG để
   dùng làm favicon, chỉ thu nhỏ lại cho vừa kích thước hiển thị.
+- Ảnh có nền trong suốt (`logo-wordmark.webp` ở chân trang, `home-hero.webp`) được
+  nén WebP có kênh alpha; nếu ép sang RGB, phần trong suốt sẽ thành nền đen.
+- Nút nổi `#modeswitch` ở góc phải dưới thay cho nút “Dùng thử” trên menu: trên các
+  trang giới thiệu nó dẫn tới bảng điều khiển demo, trên bảng điều khiển thì dẫn về
+  trang chủ. Bỏ nút này khỏi menu giúp logo và menu nằm gọn trên một hàng.
