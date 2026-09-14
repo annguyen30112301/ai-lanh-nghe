@@ -57,6 +57,34 @@ assets/img/             Ảnh và logo
 Dữ liệu mẫu của bảng điều khiển (danh sách nhân sự, hàng chờ kiểm duyệt) nằm ngay
 trong `site.js` dưới dạng hằng `STAFF` và `QUEUE` — thay bằng API thật khi cần.
 
+## Nghề tiếp theo (trang Gói nghề)
+
+Lộ trình 30 gói nghề chưa phát hành, mỗi gói 5 tình huống mẫu, nằm ngay dưới ba thẻ
+gói nghề đầu trang `goi-nghe.html`.
+
+| Tệp | Vai trò |
+|---|---|
+| `assets/data/nghe.json` | Nội dung gốc: 31 gói, 155 tình huống — sửa nội dung ở đây |
+| `assets/js/nghe-data.js` | Cùng dữ liệu ở dạng `window.NGHE_DATA`, để trang chạy được cả khi mở bằng `file://` |
+| `assets/js/nghe-tiep-theo.js` | Tìm kiếm (không cần gõ dấu), lọc trạng thái và nhóm nghề, khung xem trước |
+| `assets/css/nghe-tiep-theo.css` | Giao diện section và khung xem trước |
+
+Mỗi gói có: `id`, `ten`, `nhom`, `trangThai` (`dong-goi` / `sap-mo`), `moTa`, `duKien`,
+`luuY` (không bắt buộc — ghi chú bảo vệ dữ liệu) và `tinhHuong`. Mỗi tình huống có
+`ten`, `loai`, `dauVao`, `xuLy` (các bước), `dauRa` (kết quả mẫu). Năm tình huống của
+một gói luôn thuộc đủ năm loại việc: Soạn thảo, Phân tích, Kiểm tra, Tổng hợp, Ra quyết định.
+
+- Thẻ gói nghề được viết sẵn trong HTML; nếu sửa `nghe.json` thì phải sinh lại cả thẻ
+  trong `goi-nghe.html` lẫn `nghe-data.js` cho khớp.
+- Khung xem trước có link riêng: `goi-nghe.html#xem-truoc/<id>`, ví dụ
+  `#xem-truoc/tuyen-dung`. Nút “Xem trước” của Hành chính – Nhân sự ở trang chủ dùng link này.
+- Nút **Đăng ký nhận thông báo** đang tạm khoá. Để bật, điền link Google Form vào thuộc
+  tính `data-form-url` của thẻ `<section id="nghe-tiep-theo">` trong `goi-nghe.html`;
+  chuỗi `{nghe}` trong link sẽ được thay bằng tên nghề (dùng cho trường điền sẵn của Form).
+- Trạng thái hiện tại: Mua hàng và Giảng dạy đang có (có trang riêng); Hành chính – Nhân sự,
+  Kế toán – Tài chính, Bán hàng, Tuyển dụng, Marketing, Logistics, Quản lý dự án đang
+  đóng gói; 24 gói còn lại sắp mở.
+
 ## Ảnh
 
 Ảnh gốc (PNG 1,5–1,9MB mỗi tấm) không đưa lên repo. Các ảnh trong `assets/img/` đã

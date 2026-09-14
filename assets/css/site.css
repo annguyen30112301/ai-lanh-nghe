@@ -27,8 +27,6 @@ body { margin: 0; }
 /* thẻ gói nghề đặt trên ảnh nền — cùng kiểu thẻ giá ở trang Bảng giá */
 main .pack-card { background: var(--color-neutral-100); border: 1px solid var(--color-divider);
   border-radius: 14px; box-shadow: var(--shadow-sm); }
-/* gói nghề chưa phát hành — nút giữ bố cục nhưng không bấm được */
-button[data-coming-soon] { opacity: 0.55; cursor: default !important; }
 
 /* nút nổi chuyển giữa trang giới thiệu và bảng điều khiển (lấy từ bản triển khai trước) */
 #modeswitch {
