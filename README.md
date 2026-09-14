@@ -64,7 +64,7 @@ Khách giao cho AI một việc thật của nghề mình rồi tự kiểm tra 
 kết quả được soạn sẵn trong `assets/js/dung-thu-data.js`, không gọi AI thật, không đăng nhập,
 không lưu dữ liệu.
 
-Khác với **gói Miễn phí (Nhập nghề 0 đ)** ở trang Bảng giá: gói Miễn phí yêu cầu đăng nhập,
+Khác với **gói Gia nhập 0 đ** ở trang Bảng giá: gói này yêu cầu đăng nhập,
 thanh toán 0 đ và thực hành trên AI thật của khách. Bước cuối của trang dùng thử dẫn sang đó.
 
 Luồng 4 bước: **Chọn việc → Đầu vào (AI xử lý) → Kiểm tra → Kết quả.**
@@ -88,6 +88,22 @@ Luồng 4 bước: **Chọn việc → Đầu vào (AI xử lý) → Kiểm tra 
   màn hình trên mọi trang (trừ chính trang dùng thử).
 - Trên điện thoại, bảng kết quả chuyển thành dạng xếp chồng (nhãn bên trái, giá trị bên phải)
   để không phải cuộn ngang.
+
+## Bảng giá cá nhân (`bang-gia.html`)
+
+Ba bậc khác nhau ở **mức độ cá nhân hoá**, không chỉ ở chuyện có hỗ trợ hay không:
+
+| Bậc | Giá | Thông điệp | Điểm chính |
+|---|---|---|---|
+| Gia nhập | 0 đ | Thử xem AI có làm được việc | 1 nghề · 5 tình huống mẫu **cố định theo nghề** (~15% một gói) · hướng dẫn cơ bản |
+| Cơ bản | 690.000 đ/năm | Cài sẵn để dùng ngay | Trọn bộ AI theo nghề · 20–30 tình huống · biểu mẫu, checklist · hỗ trợ cài đặt · tự điều chỉnh |
+| Tinh chỉnh | 1.490.000 đ/năm | AI theo đúng cách bạn làm | Toàn bộ Cơ bản · kèm cặp 45 phút · chỉnh cách xử lý và biểu mẫu đầu ra · hỏi đáp ưu tiên |
+
+- Mỗi thẻ có dòng **“Dành cho bạn nếu”**; dưới thẻ là bảng **So sánh ba gói cho cá nhân** (10 tiêu chí).
+- Gói Gia nhập không cho chọn tình huống tuỳ ý: 5 tình huống do từng nghề quy định, để không mở
+  được phần lớn gói trả phí mà không trả tiền. Con số 15% chỉ là dòng ghi chú phụ.
+- Nội dung ba thẻ và bảng nằm trong `PERSONAL_TIERS` / `PERSONAL_TABLE_ROWS` của script build;
+  khung giá nhỏ trên trang Gói nghề Mua hàng dùng cùng tên bậc (Cơ bản, Tinh chỉnh, Doanh nghiệp).
 
 ## Nghề tiếp theo (trang Gói nghề)
 

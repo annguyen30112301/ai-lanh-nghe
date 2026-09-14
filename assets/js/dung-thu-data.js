@@ -436,7 +436,7 @@ window.DUNG_THU = (function () {
       moTa: 'Báo giá, thư gửi nhà cung cấp, hồ sơ năng lực.',
       tinhHuong: [baoGia, thuGiamGia, hoSoNcc],
       tiepTheo: [
-        { ten: 'Dùng gói Miễn phí trên AI của bạn', moTa: 'Gói Nhập nghề 0 đ: đăng nhập, thanh toán 0 đ, rồi thực hành 5 tình huống Mua hàng trên ChatGPT, Claude, Copilot hoặc Gemini bạn đang dùng.', href: 'bang-gia.html', chinh: true },
+        { ten: 'Bắt đầu với gói Gia nhập 0 đ', moTa: 'Đăng nhập, thanh toán 0 đ, rồi thực hành 5 tình huống Mua hàng cố định trên ChatGPT, Claude, Copilot hoặc Gemini bạn đang dùng.', href: 'bang-gia.html', chinh: true },
         { ten: 'Xem gói Mua hàng', moTa: '24 tình huống, lớp bảo vệ dữ liệu, một buổi kèm cặp 45 phút.', href: 'nghe-mua-hang.html' },
         { ten: 'Cho cả phòng Mua hàng', moTa: 'Bảng điều khiển đo mức độ áp dụng và kiểm duyệt đầu ra AI.', href: 'bang-dieu-khien.html' }
       ]
@@ -447,7 +447,7 @@ window.DUNG_THU = (function () {
       moTa: 'Kế hoạch tiết học, phiếu bài tập, nhận xét học sinh.',
       tinhHuong: [keHoach, phieuBaiTap, nhanXet],
       tiepTheo: [
-        { ten: 'Dùng gói Miễn phí trên AI của bạn', moTa: 'Gói Nhập nghề 0 đ: đăng nhập, thanh toán 0 đ, rồi thực hành 5 tình huống Giảng dạy trên ChatGPT, Claude, Copilot hoặc Gemini bạn đang dùng.', href: 'bang-gia.html', chinh: true },
+        { ten: 'Bắt đầu với gói Gia nhập 0 đ', moTa: 'Đăng nhập, thanh toán 0 đ, rồi thực hành 5 tình huống Giảng dạy cố định trên ChatGPT, Claude, Copilot hoặc Gemini bạn đang dùng.', href: 'bang-gia.html', chinh: true },
         { ten: 'Xem gói Giảng dạy', moTa: '30+ tình huống từ chuẩn bị bài đến nhận xét sau giờ dạy.', href: 'nghe-giang-day.html' },
         { ten: 'Cho cả tổ bộ môn', moTa: 'Bảng giá doanh nghiệp và gói tinh chỉnh theo trường.', href: 'bang-gia.html' }
       ]
