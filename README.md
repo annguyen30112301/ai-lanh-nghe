@@ -82,8 +82,11 @@ một gói luôn thuộc đủ năm loại việc: Soạn thảo, Phân tích, K
   và chọn sẵn gói đang xem ở câu “Gói nghề quan tâm”. Cấu hình nằm ở thẻ
   `<section id="nghe-tiep-theo">` trong `goi-nghe.html`: `data-form-url` (chuỗi `{nghe}` được
   thay bằng lựa chọn), `data-form-options` (các lựa chọn đang có trong form, cách nhau bằng `|`)
-  và `data-form-fallback` (lựa chọn dùng khi gói chưa có tên trong form). Tên lựa chọn trong
-  form phải khớp từng chữ với trường `ten` trong `nghe.json` thì mới chọn sẵn được.
+  và `data-form-fallback` (để trống: gói chưa có tên trong form thì mở form không chọn sẵn).
+  Tên lựa chọn trong form phải khớp từng chữ với trường `ten` trong `nghe.json` thì mới chọn sẵn được.
+- Form hiện có 33 lựa chọn (2 gói đang có + 31 gói trên) và ô “Khác” tự nhập để khách đề xuất
+  nghề mới. Trang Gói nghề Mua hàng và Giảng dạy có thêm link **Nhận thông báo cập nhật →**
+  (lớp `.update-link`) mở cùng form, chọn sẵn đúng gói đó.
 - Trạng thái hiện tại: Mua hàng và Giảng dạy đang có (có trang riêng); Hành chính – Nhân sự,
   Kế toán – Tài chính, Bán hàng, Tuyển dụng, Marketing, Logistics, Quản lý dự án đang
   đóng gói; 24 gói còn lại sắp mở.

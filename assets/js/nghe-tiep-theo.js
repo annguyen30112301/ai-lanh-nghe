@@ -159,12 +159,14 @@
     if (formUrl) {
       var listed = formOptions.indexOf(p.ten) !== -1;
       var choice = listed ? p.ten : formFallback;
-      cta.href = formUrl.replace('{nghe}', encodeURIComponent(choice));
+      cta.href = choice
+        ? formUrl.replace('{nghe}', encodeURIComponent(choice))
+        : formUrl.replace(/[?&]usp=pp_url/, '').replace(/[?&]entry\.\d+=\{nghe\}/, '');
       cta.removeAttribute('aria-disabled');
       cta.tabIndex = 0;
       note.textContent = listed
         ? 'Mở Google Form trong tab mới, đã chọn sẵn gói ' + p.ten + '.'
-        : 'Mở Google Form trong tab mới, đã chọn sẵn mục “' + formFallback + '”.';
+        : 'Mở Google Form trong tab mới, chọn gói bạn quan tâm hoặc ghi vào ô Khác.';
     } else {
       cta.removeAttribute('href');
       cta.setAttribute('aria-disabled', 'true');

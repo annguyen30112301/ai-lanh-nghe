@@ -24,6 +24,13 @@ body { margin: 0; }
 .brand-lockup-name { font-family: var(--font-heading); font-weight: 600; font-size: 24px; line-height: 1; color: var(--color-text); white-space: nowrap; }
 .brand-lockup-slogan { font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-700); white-space: nowrap; }
 
+/* nhận tin cập nhật của gói đang bán — mở Google Form, đã chọn sẵn gói */
+.update-link { align-self: center; font-family: var(--font-heading); font-weight: 600; font-size: 16px;
+  text-decoration: underline; text-underline-offset: 4px; padding: 10px 4px; white-space: nowrap; }
+.update-link--light { color: var(--color-accent-800); }
+.update-link--dark { color: var(--color-neutral-100); }
+.update-link:hover { text-decoration-thickness: 2px; }
+
 /* thẻ gói nghề đặt trên ảnh nền — cùng kiểu thẻ giá ở trang Bảng giá */
 main .pack-card { background: var(--color-neutral-100); border: 1px solid var(--color-divider);
   border-radius: 14px; box-shadow: var(--shadow-sm); }
