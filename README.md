@@ -78,9 +78,12 @@ một gói luôn thuộc đủ năm loại việc: Soạn thảo, Phân tích, K
   trong `goi-nghe.html` lẫn `nghe-data.js` cho khớp.
 - Khung xem trước có link riêng: `goi-nghe.html#xem-truoc/<id>`, ví dụ
   `#xem-truoc/tuyen-dung`. Nút “Xem trước” của Hành chính – Nhân sự ở trang chủ dùng link này.
-- Nút **Đăng ký nhận thông báo** đang tạm khoá. Để bật, điền link Google Form vào thuộc
-  tính `data-form-url` của thẻ `<section id="nghe-tiep-theo">` trong `goi-nghe.html`;
-  chuỗi `{nghe}` trong link sẽ được thay bằng tên nghề (dùng cho trường điền sẵn của Form).
+- Nút **Đăng ký nhận thông báo** mở Google Form “Đừng bỏ lỡ gói nghề của bạn” trong tab mới
+  và chọn sẵn gói đang xem ở câu “Gói nghề quan tâm”. Cấu hình nằm ở thẻ
+  `<section id="nghe-tiep-theo">` trong `goi-nghe.html`: `data-form-url` (chuỗi `{nghe}` được
+  thay bằng lựa chọn), `data-form-options` (các lựa chọn đang có trong form, cách nhau bằng `|`)
+  và `data-form-fallback` (lựa chọn dùng khi gói chưa có tên trong form). Tên lựa chọn trong
+  form phải khớp từng chữ với trường `ten` trong `nghe.json` thì mới chọn sẵn được.
 - Trạng thái hiện tại: Mua hàng và Giảng dạy đang có (có trang riêng); Hành chính – Nhân sự,
   Kế toán – Tài chính, Bán hàng, Tuyển dụng, Marketing, Logistics, Quản lý dự án đang
   đóng gói; 24 gói còn lại sắp mở.

@@ -63,6 +63,8 @@
 
   /* ── khung xem trước ── */
   var formUrl = (section && section.dataset.formUrl) || '';
+  var formOptions = ((section && section.dataset.formOptions) || '').split('|').filter(Boolean);
+  var formFallback = (section && section.dataset.formFallback) || '';
   var lastFocus = null;
   var openId = null;
 
@@ -155,10 +157,14 @@
     var cta = drawer.querySelector('[data-nt-cta]');
     var note = drawer.querySelector('[data-nt-cta-note]');
     if (formUrl) {
-      cta.href = formUrl.replace('{nghe}', encodeURIComponent(p.ten));
+      var listed = formOptions.indexOf(p.ten) !== -1;
+      var choice = listed ? p.ten : formFallback;
+      cta.href = formUrl.replace('{nghe}', encodeURIComponent(choice));
       cta.removeAttribute('aria-disabled');
       cta.tabIndex = 0;
-      note.textContent = 'Mở biểu mẫu Google, đã điền sẵn tên nghề ' + p.ten + '.';
+      note.textContent = listed
+        ? 'Mở Google Form trong tab mới, đã chọn sẵn gói ' + p.ten + '.'
+        : 'Mở Google Form trong tab mới, đã chọn sẵn mục “' + formFallback + '”.';
     } else {
       cta.removeAttribute('href');
       cta.setAttribute('aria-disabled', 'true');
