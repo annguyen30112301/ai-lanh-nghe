@@ -17,6 +17,13 @@ body { margin: 0; }
   background: var(--color-neutral-100); padding: 22px 0; position: sticky; top: 0; height: 100vh; overflow: auto; }
 .dashboard > main { flex: 1 1 0; min-width: 0; padding: 28px 32px 60px; }
 [data-go] { cursor: pointer; }
+/* logo ngang ở chân trang trang chủ — slogan giữ kiểu in hoa giãn chữ như trên menu */
+.brand-lockup { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.brand-lockup-icon { height: 46px; width: auto; flex: 0 0 auto; }
+.brand-lockup-text { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.brand-lockup-name { font-family: var(--font-heading); font-weight: 600; font-size: 24px; line-height: 1; color: var(--color-text); white-space: nowrap; }
+.brand-lockup-slogan { font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-700); white-space: nowrap; }
+
 /* thẻ gói nghề đặt trên ảnh nền — cùng kiểu thẻ giá ở trang Bảng giá */
 main .pack-card { background: var(--color-neutral-100); border: 1px solid var(--color-divider);
   border-radius: 14px; box-shadow: var(--shadow-sm); }

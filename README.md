@@ -107,8 +107,15 @@ Lớp `.image-placeholder` trong `site.css` vẫn giữ lại để dùng khi th
 - Ảnh đi kèm bản thiết kế gốc cũng đã được nén WebP theo cùng tham số, nên toàn bộ
   site chỉ khoảng 1,9MB thay vì 13MB. Riêng `logo.png` giữ định dạng PNG để
   dùng làm favicon, chỉ thu nhỏ lại cho vừa kích thước hiển thị.
-- Ảnh có nền trong suốt (`logo-wordmark.webp` ở chân trang, `home-hero.webp`) được
-  nén WebP có kênh alpha; nếu ép sang RGB, phần trong suốt sẽ thành nền đen.
+- Slogan thương hiệu là **“AI giỏi việc. Bạn vững nghề.”** (thay cho “Kỹ năng AI.
+  Nghiệp vững tương lai.”), hiển thị in hoa giãn chữ dưới tên thương hiệu ở menu và
+  chân trang. Logo lớn ở chân trang trang chủ là logo ngang dựng bằng HTML
+  (`.brand-lockup`: biểu tượng `logo.png` + tên + slogan) thay cho ảnh logo chữ cũ
+  vốn in sẵn slogan cũ.
+- Ảnh có nền trong suốt (`home-hero.webp`) được nén WebP có kênh alpha; nếu ép sang
+  RGB, phần trong suốt sẽ thành nền đen.
+- Ảnh nền trang Gói nghề có dòng chữ slogan cũ vẽ sẵn trên tấm bảng trong ảnh — cần
+  thay ảnh khác nếu muốn đồng bộ hoàn toàn.
 - Nút nổi `#modeswitch` ở góc phải dưới thay cho nút “Dùng thử” trên menu: trên các
   trang giới thiệu nó dẫn tới bảng điều khiển demo, trên bảng điều khiển thì dẫn về
   trang chủ. Bỏ nút này khỏi menu giúp logo và menu nằm gọn trên một hàng.
