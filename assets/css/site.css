@@ -17,6 +17,8 @@ body { margin: 0; }
   background: var(--color-neutral-100); padding: 22px 0; position: sticky; top: 0; height: 100vh; overflow: auto; }
 .dashboard > main { flex: 1 1 0; min-width: 0; padding: 28px 32px 60px; }
 [data-go] { cursor: pointer; }
+/* gói nghề chưa phát hành — nút giữ bố cục nhưng không bấm được */
+button[data-coming-soon] { opacity: 0.55; cursor: default !important; }
 
 /* nút nổi chuyển giữa trang giới thiệu và bảng điều khiển (lấy từ bản triển khai trước) */
 #modeswitch {
