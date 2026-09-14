@@ -83,6 +83,11 @@ trong `site.js` dưới dạng hằng `STAFF` và `QUEUE` — thay bằng API th
 | Nền thẻ nghề Mua hàng | `nen mua hang.png` |
 | Nền thẻ nghề Giảng dạy | `nen giang day.png` |
 | Nền thẻ nghề Hành chính – Nhân sự | `nen hanh chinh nhan su.png` |
+| Nền đầu trang Gói nghề (`goi-nghe.html`) | `nen trang goi nghe.png` |
+
+Nền trang Gói nghề gắn vào thẻ `<main>` giống trang Bảng giá. Vì ảnh có chi tiết ở
+nửa phải, ba thẻ gói nghề trên trang này được thêm lớp `.pack-card` (nền sáng, viền,
+bo góc, bóng nhẹ — cùng kiểu thẻ giá) để chữ không chìm vào ảnh.
 
 Ba ảnh nền thẻ nghề nằm ở lớp `.u221` — khối tuyệt đối chiếm 62% chiều ngang phía
 trên bên phải thẻ, độ mờ 0.5, bên trên có lớp gradient `.u223` loang dần sang trái
