@@ -28,6 +28,7 @@ nghe-mua-hang.html      Gói nghề Mua hàng
 bang-gia.html           Bảng giá
 thanh-toan.html         Thanh toán (4 bước trong cùng một trang)
 do-gio.html             Công cụ tự đo giờ tiết kiệm
+dung-thu.html           Bàn thử việc — dùng thử 6 tình huống của 2 nghề đang mở
 an-toan.html            An toàn dữ liệu & tuân thủ
 tai-nguyen.html         Hướng dẫn, checklist, sổ tay
 bang-dieu-khien.html    Bảng điều khiển doanh nghiệp (5 màn hình)
@@ -56,6 +57,33 @@ assets/img/             Ảnh và logo
 
 Dữ liệu mẫu của bảng điều khiển (danh sách nhân sự, hàng chờ kiểm duyệt) nằm ngay
 trong `site.js` dưới dạng hằng `STAFF` và `QUEUE` — thay bằng API thật khi cần.
+
+## Bàn thử việc (`dung-thu.html`)
+
+Khách giao cho AI một việc thật của nghề mình rồi tự kiểm tra kết quả. Kết quả được
+**soạn sẵn** trong `assets/js/dung-thu-data.js`; trang không gọi AI thật, không lưu dữ liệu.
+
+Luồng 4 bước: **Chọn việc → Đầu vào (AI xử lý) → Kiểm tra → Kết quả.**
+
+| Nghề | Tình huống | Nút chỉnh | Lỗi cài sẵn khách phải tự bắt |
+|---|---|---|---|
+| Mua hàng | So sánh 3 báo giá | Ưu tiên chi phí / giao nhanh / hậu mãi | NCC C ghi giá chưa gồm VAT nên trông rẻ nhất |
+| Mua hàng | Soạn thư đề nghị giảm giá | Giọng mềm / trung tính / cứng rắn | Câu cam kết vượt thẩm quyền người gửi |
+| Mua hàng | Chấm hồ sơ năng lực NCC | 3 bộ trọng số | ISO 9001 hết hạn nhưng vẫn được chấm cao; có bước ẩn CCCD |
+| Giảng dạy | Kế hoạch tiết học | 45 / 90 phút | Tổng thời lượng vượt tiết học 5 phút |
+| Giảng dạy | Phiếu bài tập 3 mức độ | 4·3·2 / 3·3·3 câu | Đáp án sai ở câu so sánh 5/6 và 7/9 |
+| Giảng dạy | Nhận xét học sinh | Gửi phụ huynh / sổ theo dõi | Câu suy diễn không có trong ghi chú; có bước ẩn danh học sinh |
+
+- Mục có lỗi trong checklist không tick được cho đến khi khách bấm vào xem gợi ý và sửa;
+  nút **Dùng kết quả này** chỉ bật khi tick đủ. Sau khi sửa, kết quả thật sự đổi
+  (ví dụ đề xuất chuyển từ NCC C sang NCC B, hồ sơ từ “Đạt” thành “Đạt có điều kiện”).
+- Link vào thẳng một tình huống: `dung-thu.html#<nghề>/<tình huống>`, ví dụ
+  `#mua-hang/bao-gia`, `#giang-day/nhan-xet`. Chỉ `#mua-hang` thì mở bước chọn việc với nghề đó.
+- Lối vào: nút “Thử ngay →”, “Xem AI làm được gì →”, “Xem thử một tình huống” trên trang
+  Mua hàng; “Xem thử một tình huống →” trên trang Giảng dạy; nút nổi **Dùng thử 2 phút**
+  ở các trang giới thiệu. Trên trang dùng thử, nút nổi dẫn tới bảng điều khiển demo.
+- Trên điện thoại, bảng kết quả chuyển thành dạng xếp chồng (nhãn bên trái, giá trị bên phải)
+  để không phải cuộn ngang.
 
 ## Nghề tiếp theo (trang Gói nghề)
 
@@ -151,5 +179,5 @@ Lớp `.image-placeholder` trong `site.css` vẫn giữ lại để dùng khi th
 - Ảnh nền trang Gói nghề có dòng chữ slogan cũ vẽ sẵn trên tấm bảng trong ảnh — cần
   thay ảnh khác nếu muốn đồng bộ hoàn toàn.
 - Nút nổi `#modeswitch` ở góc phải dưới thay cho nút “Dùng thử” trên menu: trên các
-  trang giới thiệu nó dẫn tới bảng điều khiển demo, trên bảng điều khiển thì dẫn về
-  trang chủ. Bỏ nút này khỏi menu giúp logo và menu nằm gọn trên một hàng.
+  trang giới thiệu nó là “Dùng thử 2 phút” dẫn tới `dung-thu.html`, trên trang dùng thử
+  dẫn tới bảng điều khiển demo, trên bảng điều khiển thì dẫn về trang chủ. Bỏ nút này khỏi menu giúp logo và menu nằm gọn trên một hàng.
