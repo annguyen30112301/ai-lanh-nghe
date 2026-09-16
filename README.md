@@ -105,6 +105,30 @@ Ba bậc khác nhau ở **mức độ cá nhân hoá**, không chỉ ở chuyệ
 - Nội dung ba thẻ và bảng nằm trong `PERSONAL_TIERS` / `PERSONAL_TABLE_ROWS` của script build;
   khung giá nhỏ trên trang Gói nghề Mua hàng dùng cùng tên bậc (Cơ bản, Tinh chỉnh, Doanh nghiệp).
 
+## Bộ tính tiền (`assets/js/tinh-tien.js`)
+
+Pha 1 của trang thanh toán: bộ tính tiền không phụ thuộc giao diện, chưa trang nào gọi
+tới. Dùng được trong trình duyệt (`window.TinhTien`) và Node (`require`). Bảng giá theo
+nghề và các bậc ưu đãi nằm trong `CAU_HINH` ở đầu tệp.
+
+- `muaMoi` tạo đơn và subscription 1 năm. `muaThem` tính thêm nghề, seat, nhóm seat
+  theo số ngày còn lại (ví dụ `245/365`), hết hạn cùng subscription. `baoGiaGiaHan` tính
+  báo giá kỳ sau, không tự trừ tiền. `dangKyKySau` ghi giảm seat, bỏ nghề, đổi nghề,
+  đổi nghề chính để áp ở kỳ sau. `ganNguoiDung` đổi người dùng seat, 0 đ.
+- Thứ tự nghề: khách chọn nghề chính; các nghề khác trong cùng đơn xếp giá cao → thấp;
+  lần mua sau nối tiếp vào cuối. Bậc quy mô theo tổng seat của subscription, lên bậc giữa
+  kỳ chỉ áp cho phần mua thêm. Đơn đã tạo không bị tính lại. Giới hạn nội bộ 50% mỗi dòng.
+- Tiền tính bằng số nguyên (BigInt), làm tròn một lần ở cuối mỗi dòng. Mỗi dòng có
+  `moTa` và `buoc[]` để giao diện hiện cách tính.
+- Chưa chốt: giá Giảng dạy (`goiNghe: null` → lỗi `CHUA_CO_GIA`), giá Tinh chỉnh doanh
+  nghiệp của một số nghề, thuế GTGT (`loaiThue: null`, không cài tỉ lệ).
+
+Kiểm thử (Node 18 trở lên):
+
+```bash
+node --test tests/*.test.js
+```
+
 ## Nghề tiếp theo (trang Gói nghề)
 
 Lộ trình 30 gói nghề chưa phát hành, mỗi gói 5 tình huống mẫu, nằm ngay dưới ba thẻ
