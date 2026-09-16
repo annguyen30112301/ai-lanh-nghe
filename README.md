@@ -129,6 +129,25 @@ Kiểm thử (Node 18 trở lên):
 node --test tests/*.test.js
 ```
 
+## Giỏ hàng và Bảng giá mới (`gio-hang.html`, `assets/js/gio-hang.js`)
+
+Pha 2. Bảng giá cá nhân và doanh nghiệp dựng lại theo Gói nghề (theo năm) + Dịch vụ Tinh chỉnh
+(một lần). Giá, bậc ưu đãi và ví dụ trên `bang-gia.html` được bộ dựng lấy thẳng từ
+`tinh-tien.js` qua Node, nên trang tĩnh, giỏ hàng và kiểm thử dùng cùng một bộ số.
+
+- Biểu tượng giỏ có số nghề trên menu mọi trang. Nút `[data-them-gio="mua-hang"]` thêm nghề vào giỏ
+  (bảng giá theo nghề, khung giá trang Mua hàng).
+- `gio-hang.html`: giỏ Cá nhân hoặc Doanh nghiệp (đổi loại thì hỏi trước khi xoá). Cá nhân chọn
+  nghề chính, bật Tinh chỉnh từng nghề. Doanh nghiệp chia nhóm seat (tên, số seat, nghề), thanh bậc
+  quy mô theo tổng seat, Tinh chỉnh doanh nghiệp (nghề chưa có giá ghi "cần báo giá"). Bên phải là
+  hoá đơn: công thức từng dòng, lý do từng ưu đãi, "Xem từng bước", phí hằng năm / một lần, ngày
+  hiệu lực và gia hạn dự kiến.
+- Bộ ước tính nhanh cho một nhóm seat trên Bảng giá, có nút đưa vào giỏ doanh nghiệp.
+- Giỏ lưu `localStorage` (`aln-gio-hang-v1`), mở lại là tính lại theo bảng giá hiện hành.
+- Các nghề ngoài Mua hàng đang đóng gói nhưng vẫn thêm được vào giỏ với nhãn "giá đề xuất" để
+  minh hoạ cách tính nhiều nghề; Giảng dạy chưa có giá nên chưa thêm được.
+- "Tiếp tục thanh toán" vẫn dẫn tới `thanh-toan.html` bản cũ; luồng 5 bước là Pha 3.
+
 ## Nghề tiếp theo (trang Gói nghề)
 
 Lộ trình 30 gói nghề chưa phát hành, mỗi gói 5 tình huống mẫu, nằm ngay dưới ba thẻ

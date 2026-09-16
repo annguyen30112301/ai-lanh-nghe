@@ -305,3 +305,17 @@ test("Diễn giải từng bước khớp thành tiền", () => {
   assert.deepEqual(d.buoc.map((b) => b.giaTri), [39500000, 33575000, 30217500]);
   assert.equal(d.buoc.at(-1).giaTri, d.thanhTien);
 });
+
+test("Dòng thời gian trong kế hoạch (mua mới một đơn): 83.002.500 → 7.873.562 → 39.381.042 → gia hạn 167.280.000 đ", () => {
+  let r = vanPhong50();
+  assert.equal(r.don.phiGoiNghe, 83002500);
+  assert.equal(r.don.tongUuDai, 25497500);
+  r = T.muaThem(r.subscription, { ngayHieuLuc: "2027-05-01", themNhom: [{ ma: "KHO", ten: "Kho", seat: 20, nghe: ["mua-hang"] }] });
+  assert.equal(r.don.tongThanhToan, 7873562);
+  r = T.muaThem(r.subscription, { ngayHieuLuc: "2027-07-01", themSeat: [{ maNhom: "VP", soSeat: 50 }] });
+  assert.deepEqual(tien(r.don), [["VP", "mua-hang", 1, 13913425], ["VP", "ke-toan", 2, 14336877], ["VP", "nhan-su", 3, 11130740]]);
+  assert.equal(r.don.tongThanhToan, 39381042);
+  const g = T.baoGiaGiaHan(r.subscription).don;
+  assert.deepEqual(tien(g), [["VP", "mua-hang", 1, 55200000], ["VP", "ke-toan", 2, 56880000], ["VP", "nhan-su", 3, 44160000], ["KHO", "mua-hang", 1, 11040000]]);
+  assert.equal(g.phiGoiNghe, 167280000);
+});

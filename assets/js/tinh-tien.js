@@ -24,16 +24,16 @@
   var CAU_HINH = {
     phienBan: "2026-09-16",
     // Thứ tự khai báo = thứ tự danh mục (dùng khi hai nghề cùng giá).
-    // tinhChinhDN = null: chưa có giá niêm yết, cần báo giá.
+    // dangBan = false: gói đang đóng gói, giá là giá đề xuất. tinhChinhDN = null: chưa có giá niêm yết, cần báo giá.
     nghe: [
-      { id: "hanh-chinh", ten: "Hành chính", goiNghe: 590000, tinhChinh: 600000, tinhChinhDN: null },
-      { id: "nhan-su", ten: "Nhân sự", goiNghe: 690000, tinhChinh: 800000, tinhChinhDN: 3500000 },
-      { id: "mua-hang", ten: "Mua hàng", goiNghe: 690000, tinhChinh: 800000, tinhChinhDN: 3000000 },
-      { id: "ke-toan", ten: "Kế toán – Tài chính", goiNghe: 790000, tinhChinh: 900000, tinhChinhDN: 4000000 },
-      { id: "marketing", ten: "Marketing", goiNghe: 690000, tinhChinh: 800000, tinhChinhDN: null },
-      { id: "quan-ly", ten: "Quản lý", goiNghe: 890000, tinhChinh: 1200000, tinhChinhDN: null },
+      { id: "hanh-chinh", ten: "Hành chính", dangBan: false, goiNghe: 590000, tinhChinh: 600000, tinhChinhDN: null },
+      { id: "nhan-su", ten: "Nhân sự", dangBan: false, goiNghe: 690000, tinhChinh: 800000, tinhChinhDN: 3500000 },
+      { id: "mua-hang", ten: "Mua hàng", dangBan: true, goiNghe: 690000, tinhChinh: 800000, tinhChinhDN: 3000000 },
+      { id: "ke-toan", ten: "Kế toán – Tài chính", dangBan: false, goiNghe: 790000, tinhChinh: 900000, tinhChinhDN: 4000000 },
+      { id: "marketing", ten: "Marketing", dangBan: false, goiNghe: 690000, tinhChinh: 800000, tinhChinhDN: null },
+      { id: "quan-ly", ten: "Quản lý", dangBan: false, goiNghe: 890000, tinhChinh: 1200000, tinhChinhDN: null },
       // Đang bán trên site nhưng chưa chốt giá.
-      { id: "giang-day", ten: "Giảng dạy", goiNghe: null, tinhChinh: null, tinhChinhDN: null }
+      { id: "giang-day", ten: "Giảng dạy", dangBan: true, goiNghe: null, tinhChinh: null, tinhChinhDN: null }
     ],
     // Phần trăm nguyên.
     moRongNghe: [0, 10, 20, 25, 30], // #1, #2, #3, #4, #5+
@@ -296,7 +296,7 @@
     }
     giam.push({
       loai: "MO_RONG_NGHE", ten: "mở rộng nghề", tyLe: tyLeMoRong(thuTu, cauHinh),
-      lyDo: thuTu === 1 ? "Nghề chính #1" : "Nghề #" + thuTu + (loaiKhach === DOANH_NGHIEP ? " của nhóm " + nhomTen : "")
+      lyDo: thuTu === 1 ? "Nghề chính #1" : "Nghề #" + thuTu + (loaiKhach === DOANH_NGHIEP ? " · " + nhomTen : "")
     });
     return giam;
   }
