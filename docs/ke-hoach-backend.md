@@ -1,233 +1,277 @@
 # Kế hoạch chuẩn bị triển khai backend — AI Lành Nghề
 
-Trạng thái: **bản nháp để thảo luận** · 24/09/2026
-
-Tài liệu này dựa trên site tĩnh hiện có: trang nào đang giả lập dữ liệu, trang nào
-cần backend thật, và thứ tự làm để có thể bán được gói đầu tiên (Mua hàng).
+Trạng thái: **bản 2 — đã áp các quyết định ngày 25/09/2026** · baseline kiến trúc là tài liệu
+*03 · Cấu trúc hệ thống — bản chốt* (Skill-as-a-Service: Web App, License Server, Skill Engine,
+Connector, Analytics, Dashboard). Phần giá lấy **repo làm chuẩn** (`assets/js/tinh-tien.js`).
 
 ---
 
-## 1. Hiện trạng
+## 1. Quyết định đã chốt
 
-| Phần | Đang có | Còn giả lập |
+| # | Quyết định | Hệ quả cho backend |
 |---|---|---|
-| Bảng giá, giỏ hàng | `tinh-tien.js` (Pha 1) và `gio-hang.js` (Pha 2) tính đúng giá, có kiểm thử Node | Giỏ lưu `localStorage`, chưa có đơn hàng thật |
-| Thanh toán (`thanh-toan.html`) | Giao diện 3 bước: gói → thông tin hoá đơn → VNPay / MoMo / chuyển khoản | Không tạo đơn, không gọi cổng thanh toán, không xuất hoá đơn |
-| Đăng nhập | Nút “Đăng nhập” dẫn thẳng vào bảng điều khiển demo | Chưa có tài khoản |
-| Bảng điều khiển (`bang-dieu-khien.html`) | 5 màn hình: Tổng quan, Theo nhân sự, Đo trước–sau, Kiểm duyệt, Tuân thủ dữ liệu | Toàn bộ số liệu là hằng `STAFF`, `QUEUE` trong `site.js` và số viết cứng trong HTML |
-| Gói nghề, tình huống | `assets/data/nghe.json` (31 gói, 155 tình huống) | Nội dung gói trả phí (20–30 tình huống, biểu mẫu, checklist) chưa có nơi phát hành có kiểm soát quyền |
-| Đăng ký nhận thông báo | Google Form | Chấp nhận được, chưa cần chuyển |
-| Bàn thử việc | Kết quả soạn sẵn, không gọi AI | Giữ nguyên là mockup, không thuộc phạm vi backend |
-
-### Ràng buộc sản phẩm đã công bố (không được phá)
-
-Trang `an-toan.html` hứa với khách:
-
-> Gói nghề chạy trên tài khoản AI của chính bạn. Chúng tôi không đặt máy chủ trung gian,
-> không kết nối trực tiếp vào ERP, email hay ổ đĩa nội bộ.
-
-Hệ quả cho backend:
-
-1. **Backend không được proxy lời gọi AI** và không nhận nội dung công việc của khách.
-2. Số liệu trên bảng điều khiển (đầu việc, giờ tiết kiệm, lần từ chối dữ liệu cấm) phải đến
-   từ **khai báo của người dùng** hoặc **sự kiện chỉ chứa siêu dữ liệu** (loại việc, thời điểm,
-   nhóm dữ liệu bị phát hiện) — không chứa văn bản gốc.
-3. Hàng chờ Kiểm duyệt hiện hiển thị cả tóm tắt đầu ra AI. Cần quyết định (xem mục 8) là lưu
-   tóm tắt do người dùng tự nhập, hay chỉ lưu tiêu đề + kết quả checklist.
+| Q1 | Connector **chỉ trả** hướng dẫn, mẫu biểu, quy tắc cho AI; **không bao giờ nhận nội dung công việc** của khách | Mọi tool của Connector có tham số đầu vào là mã (nghề, tình huống, bước), không có trường văn bản tự do chứa dữ liệu khách. Lời hứa “không máy chủ trung gian” trên `an-toan.html` giữ nguyên |
+| Q2 | Không tuyên bố “không sao chép được”; nói là **hạn chế và truy vết** | Nội dung trả về theo từng tình huống, có dấu vết theo người dùng (mục 6) |
+| Q3 | Tìm thêm kênh ngoài Connector | Chọn **Connector (MCP) + tiện ích trình duyệt**, xem mục 3 |
+| Q4 | Thời gian **sau** khi dùng phải do nền tảng đo; tự khai chỉ dùng cho **mốc ban đầu** | Có “phiên việc” đo giờ thật, xem mục 5 |
+| Q5 | Xác thực ở **đăng nhập Web App** và ở **bước kết nối Connector** | OAuth 2.1 + OTP khi thiết bị mới, xem mục 4 |
+| Q6 | OTP ưu tiên **Zalo** | Zalo ZNS, SMS dự phòng |
+| Q7 | Pilot **cả cá nhân và doanh nghiệp** | Tổ chức + seat nằm trong Giai đoạn 1 |
+| Q8 | Hết hạn: không kết nối được Connector nữa; phải xử lý trường hợp skill bị nạp sẵn vào môi trường người dùng | Skill phục vụ theo yêu cầu, không giao trọn gói, xem mục 6 |
+| Q9–15 | **Repo đúng**: giá theo `tinh-tien.js` (ưu đãi quy mô, mở rộng nghề, Tinh chỉnh trả một lần), Mua hàng + Giảng dạy đang mở, Cổng 3 = giảm ≥ 40% trên 2/3 đầu việc | Tài liệu 02 cần sửa theo repo. `thanh-toan.html` (còn giá cũ 37,6 triệu) sẽ làm lại ở Pha 3 |
 
 ---
 
-## 2. Phạm vi theo giai đoạn
+## 2. Kiến trúc
 
-### Giai đoạn 0 — Chuẩn bị (1–2 tuần)
-Chốt các quyết định ở mục 8, dựng hạ tầng trống, CI, môi trường staging.
+```
+                 ┌──────────────── Web App (site hiện tại + trang tài khoản, dashboard) ───────────────┐
+                 │                                                                                    │
+ Người dùng ─────┤  Tiện ích trình duyệt  ── chèn skill, đo phiên việc, kiểm dữ liệu cấm ngay trên máy  │
+                 │                                                                                    │
+                 │  ChatGPT / Claude / Gemini / Copilot  ── gọi ──►  Connector (remote MCP)            │
+                 └────────────────────────────────────────────────────────────────────────────────────┘
+                                         │  chỉ mã + siêu dữ liệu, không nội dung khách
+                                         ▼
+                        API AI Lành Nghề (Node.js/TypeScript, Fastify)
+                         ├─ Auth + OTP (Zalo ZNS / SMS)
+                         ├─ License Server (user, org, seat, entitlement, thiết bị, grant)
+                         ├─ Skill Engine (nội dung skill có phiên bản, phục vụ theo tình huống)
+                         ├─ Billing (tinh-tien.js dùng chung, VNPay, chuyển khoản)
+                         └─ Analytics (sự kiện → chỉ số dashboard, báo cáo PDF)
+                                         │
+                                    PostgreSQL
+```
 
-### Giai đoạn 1 — Bán được hàng (MVP, ~4–6 tuần)
-- Tài khoản: đăng ký / đăng nhập, tổ chức doanh nghiệp, mời thành viên.
-- Đơn hàng: nhận giỏ từ trình duyệt, **tính lại giá trên server** bằng chính `tinh-tien.js`,
-  lưu đơn bất biến kèm `bangGiaPhienBan`.
-- Thanh toán: chuyển khoản ngân hàng (đối soát thủ công bởi admin) trước, VNPay sau.
-- Subscription, nhóm seat, gán người dùng vào seat (`ganNguoiDung`).
-- Phát hành nội dung gói nghề cho người có seat hợp lệ.
-- Trang quản trị nội bộ tối thiểu: xem đơn, xác nhận đã nhận tiền, kích hoạt subscription.
-
-### Giai đoạn 2 — Bảng điều khiển thật (~4 tuần)
-- Sự kiện sử dụng (siêu dữ liệu) + khai báo giờ tiết kiệm có quản lý xác nhận.
-- Màn hình Tổng quan, Theo nhân sự (cảnh báo 14 ngày), Đo trước–sau.
-- Hàng chờ Kiểm duyệt và nhật ký người duyệt.
-- Nhật ký Tuân thủ dữ liệu, xuất CSV/PDF, lưu 24 tháng.
-
-### Giai đoạn 3 — Vòng đời hợp đồng
-- Mua thêm giữa kỳ (`muaThem`), báo giá gia hạn (`baoGiaGiaHan`), thay đổi kỳ sau (`dangKyKySau`).
-- Nhắc gia hạn qua email, MoMo, hoá đơn điện tử tự động.
-- Đặt lịch kèm cặp 45 phút (dịch vụ Tinh chỉnh).
+Lựa chọn công nghệ giữ như bản 1: Node.js/TypeScript (để server chạy đúng `tinh-tien.js`),
+Fastify, PostgreSQL, Drizzle/Kysely, pg-boss cho việc nền. Cần **tên miền riêng** trước khi làm
+đăng nhập (cookie và trang OAuth của Connector đều cần một miền ổn định).
 
 ---
 
-## 3. Kiến trúc đề xuất
+## 3. Kênh đưa skill tới người dùng (Q3)
+
+| Kênh | Nền tảng / gói | Kiểm soát quyền | Đo được gì | Rủi ro |
+|---|---|---|---|---|
+| **A. Connector remote MCP** | Claude: có cả gói Free (Free giới hạn 1 connector). ChatGPT: custom connector cần Plus/Pro/Business trở lên (Developer Mode); gói Free chỉ dùng được app đã duyệt trong thư mục Plugin của OpenAI. Gemini: chỉ trong Spark hoặc Gemini Enterprise. Copilot: qua agent Microsoft 365, cần tenant bật | OAuth theo từng người, kiểm entitlement **mỗi lần gọi** | Lần gọi tool: tình huống nào, bước nào, lúc nào | AI có thể không gọi tool; lời gọi đi từ máy chủ nền tảng nên không biết thiết bị |
+| **B. Tiện ích trình duyệt** (Chrome/Edge) | Mọi nền tảng bản web, **kể cả gói miễn phí** | Đăng nhập tiện ích bằng OAuth + OTP, giới hạn số thiết bị | **Đo phiên việc thật** (bắt đầu, kết thúc, thời gian thao tác); kiểm dữ liệu cấm (CCCD, số tài khoản…) **ngay trên máy**, chỉ gửi loại dữ liệu bị phát hiện | Giao diện nền tảng đổi thì phải sửa; không chạy trên app điện thoại/desktop; doanh nghiệp phải cho phép cài tiện ích |
+| C. GPT / Project / Gem dựng sẵn, không connector | Mọi gói | Không có | Không có | Sao chép được toàn bộ; chỉ dùng cho gói Gia nhập 0 đ |
+| D. Add-in Office / agent Copilot | Doanh nghiệp dùng Microsoft 365 | Theo tenant | Theo lời gọi | Chu kỳ duyệt dài; để Giai đoạn 3 |
+
+**Đề xuất:** Giai đoạn 1 làm **A trên một nền tảng** + **B**.
+- Connector là kênh chính thức cho skill và kiểm quyền.
+- Tiện ích là nơi **đo thời gian** (Q4) và **kiểm dữ liệu cấm tại chỗ**, đúng luồng 7 bước đang vẽ
+  trên `an-toan.html`. Nó cũng phủ được khách dùng Gemini/ChatGPT miễn phí.
+- Nền tảng cho Connector đầu tiên: chọn theo khảo sát khách pilot. Claude cho phép gói Free dùng
+  custom connector nên dễ pilot nhất. ChatGPT phổ biến hơn nhưng gói Free phải chờ OpenAI duyệt
+  vào thư mục Plugin.
+- Chính sách quyền riêng tư của tiện ích phải nói rõ: đọc nội dung trang **chỉ để xử lý tại máy**,
+  không gửi đi (yêu cầu “limited use” của Chrome Web Store).
+
+> Khả năng connector của từng nền tảng thay đổi theo tháng. Kiểm tra lại ngay trước khi code Giai đoạn 1.
+
+---
+
+## 4. Xác thực và chống chia sẻ (Q5, Q6)
+
+Chỉ có **ba điểm** để xác thực: đăng nhập Web App, đăng nhập tiện ích, và bước cấp quyền (OAuth)
+khi người dùng kết nối Connector trong ChatGPT/Claude. Sau đó, mỗi lời gọi Connector mang token và
+License Server kiểm entitlement.
 
 ```
-Trình duyệt (site tĩnh hiện tại)
-      │  fetch + cookie phiên (SameSite=Lax)
-      ▼
-api.<tên-miền>  ── Node.js (TypeScript) ── PostgreSQL
-      │                  │
-      │                  ├─ tinh-tien.js (dùng chung với frontend)
-      │                  ├─ hàng đợi việc nền (email, đối soát, xuất PDF)
-      │                  └─ lưu trữ tệp (PDF báo cáo, hoá đơn, nội dung gói)
-      ▼
-VNPay · MoMo · nhà cung cấp hoá đơn điện tử · dịch vụ gửi email
+Đăng nhập (Web App / tiện ích / OAuth của Connector)
+  → email + mật khẩu hoặc link email
+  → thiết bị hoặc grant mới? ── có → OTP Zalo ZNS (SMS dự phòng) tới số của chủ license
+  → cấp token: access 1 giờ, refresh xoay vòng, gắn user + seat + grant
+Mỗi lời gọi Connector → kiểm token, seat còn hiệu lực, license chưa hết hạn, nghề trong entitlement
 ```
 
-| Hạng mục | Đề xuất | Lý do |
+| Quy tắc | Personal | Business |
 |---|---|---|
-| Ngôn ngữ | Node.js 20+ / TypeScript | `tinh-tien.js` đã chạy được trong Node; server dùng **đúng tệp đó** để tính lại giá, không viết lại logic ở ngôn ngữ khác |
-| Framework | Fastify (hoặc Hono) | Nhẹ, có validate schema JSON sẵn |
-| CSDL | PostgreSQL | Đơn hàng, subscription, sự kiện đều là dữ liệu quan hệ; `jsonb` cho `buoc[]`, `giam[]` của dòng đơn |
-| Truy vấn / migration | Drizzle hoặc Kysely + migration SQL | Giữ SQL tường minh, dễ review |
-| Việc nền | pg-boss (hàng đợi trên chính Postgres) | Không cần thêm Redis ở giai đoạn đầu |
-| Xác thực | Phiên cookie httpOnly; đăng nhập bằng link email (magic link), thêm Google sau | Khách doanh nghiệp VN quen email công ty; không phải quản lý mật khẩu |
-| PDF | Render HTML → PDF bằng Chromium headless | Tái dùng CSS của site |
+| Số thiết bị tin cậy (Web App + tiện ích) | 2 | Theo chính sách tổ chức, mặc định 3 / người |
+| Số grant Connector đang hoạt động | 2 (ví dụ Claude + ChatGPT) | 2 / người |
+| Thêm thiết bị / grant mới | OTP tới số chủ license | OTP tới số của chính người giữ seat |
+| Đổi người giữ seat | — | Thu hồi toàn bộ token và grant của người cũ ngay lập tức |
+| Dấu hiệu bất thường (nhiều grant bị thu hồi rồi tạo lại, lượng gọi vượt ngưỡng) | Xác thực lại → giới hạn → tạm khoá | Báo admin tổ chức |
 
-### Tên miền — cần làm trước khi có đăng nhập
-
-Site đang ở `annguyen30112301.github.io`. Cookie phiên từ một API khác miền sẽ bị trình duyệt
-chặn (cookie bên thứ ba). Cần **tên miền riêng**, ví dụ `ailanhnghe.vn` cho site và
-`api.ailanhnghe.vn` cho backend — cùng site nên cookie `SameSite=Lax` hoạt động. GitHub Pages
-vẫn phục vụ được site tĩnh qua custom domain.
-
----
-
-## 4. Mô hình dữ liệu (bản phác)
-
-Tên bảng tiếng Anh, tên trường nghiệp vụ bám theo `tinh-tien.js` để dễ đối chiếu.
-
-**Danh mục**
-- `bang_gia_phien_ban` — `phien_ban` (vd `2026-09-16`), `cau_hinh jsonb` (bản sao `CAU_HINH`), `hieu_luc_tu`.
-- `nghe` — `id` (`mua-hang`…), `ten`, `dang_ban`, `noi_dung_phien_ban`.
-
-**Khách hàng**
-- `users` — email, họ tên, trạng thái.
-- `organizations` — tên doanh nghiệp, mã số thuế, email nhận hoá đơn, người ký duyệt.
-- `memberships` — user × organization × vai trò (`owner`, `admin`, `reviewer`, `member`).
-
-**Bán hàng**
-- `subscriptions` — `loai_khach` (`CA_NHAN` / `DOANH_NGHIEP`), chủ sở hữu (user hoặc org),
-  `ky_bat_dau`, `ky_het_han`, `bang_gia_phien_ban`, trạng thái (`cho_thanh_toan`, `hoat_dong`, `het_han`).
-- `seat_groups` — `ma`, `ten`, `seat`, thuộc subscription.
-- `seat_group_nghe` — `nghe_id`, `thu_tu`, `tu_ngay`.
-- `seats` — `ma` (`S001`…), `ma_nhom`.
-- `seat_assignments` — seat × user, `tu_ngay`, `den_ngay` (từ `lichSuGan`).
-- `pending_changes` — `thayDoiKySau` (GIAM_SEAT, BO_NGHE, DOI_NGHE, DOI_NGHE_CHINH).
-- `orders` — `loai_don` (`MUA_MOI`, `MUA_THEM`, `GIA_HAN`), `ket_qua jsonb` (nguyên đối tượng `don`
-  do bộ tính tiền trả về), tổng tiền, trạng thái. **Không sửa sau khi tạo** (nguyên tắc “không hồi tố”).
-- `payments` — cổng, mã giao dịch, số tiền, trạng thái, payload callback thô.
-- `invoices` — số hoá đơn, mã tra cứu, tệp PDF/XML, trạng thái phát hành.
-
-**Sử dụng & bảng điều khiển**
-- `usage_events` — user, nghề, mã tình huống, loại sự kiện, thời điểm. Không có nội dung.
-- `time_reports` — số phút trước/sau do người dùng khai, người xác nhận, thời điểm xác nhận.
-- `review_items` — tiêu đề, loại đầu việc, người tạo, công cụ AI, trạng thái, checklist đã tick.
-- `review_log` — ai duyệt / yêu cầu sửa, lý do.
-- `compliance_events` — nhóm dữ liệu bị phát hiện (CCCD, tài khoản ngân hàng…), công cụ, hành động. Giữ 24 tháng.
-- `audit_log` — mọi thao tác quản trị (xác nhận tiền, đổi seat, xuất dữ liệu).
-
-Tiền lưu bằng `bigint` (đồng), khớp với BigInt trong bộ tính tiền.
+- Không khoá theo IP (lời gọi Connector đều đến từ máy chủ nền tảng AI).
+- Không chặn được việc khách chia sẻ cả tài khoản ChatGPT/Claude. Chấp nhận điều này.
+- **Zalo ZNS**: cần Zalo OA đã xác thực doanh nghiệp, mẫu tin OTP được duyệt, trả phí theo tin.
+  SMS brandname làm dự phòng (cũng cần đăng ký mẫu). Đăng ký cả hai **từ Giai đoạn 0** vì thời gian
+  duyệt tính bằng tuần. Không dùng email làm kênh OTP chính vì mất tác dụng chống chia sẻ.
+- Số điện thoại là dữ liệu cá nhân: nêu mục đích trong chính sách, không dùng cho marketing nếu
+  khách chưa đồng ý.
 
 ---
 
-## 5. API (bản phác)
+## 5. Đo thời gian do nền tảng đo (Q4)
 
-```
-POST /auth/magic-link            gửi link đăng nhập
-GET  /auth/callback              đổi token lấy phiên
-POST /auth/logout
-GET  /me                         người dùng + các tổ chức + seat đang giữ
+### Mốc ban đầu (trước khi dùng)
+Mỗi nghề có **3 đầu việc chuẩn** (Mua hàng: so sánh báo giá, thư đàm phán, báo cáo tuần). Có hai
+cách ghi mốc, nguồn được lưu kèm:
+1. **Tự khai** có quản lý xác nhận (chấp nhận được cho dữ liệu ban đầu).
+2. **Bấm giờ một lần không dùng AI** bằng chế độ đo của tiện ích hoặc trang `do-gio.html`. Mốc này
+   tin cậy hơn; nên khuyến khích trong pilot.
 
-POST /quote                      giỏ → báo giá (server tính lại, không lưu)
-POST /orders                     giỏ → đơn MUA_MOI (tính lại, so với số khách thấy, lệch thì từ chối)
-GET  /orders/:id
-POST /orders/:id/pay             chọn cổng → URL thanh toán / thông tin chuyển khoản
-POST /webhooks/vnpay             IPN, kiểm chữ ký, idempotent
-POST /webhooks/momo
+### Sau khi dùng: phiên việc đo tự động
+Một **phiên việc** = một lần làm một tình huống, từ lúc bắt đầu tới lúc người dùng xác nhận kết quả.
 
-GET  /subscriptions/:id
-POST /subscriptions/:id/seats/:ma/assign
-POST /subscriptions/:id/purchase-more     (Giai đoạn 3)
-GET  /subscriptions/:id/renewal-quote     (Giai đoạn 3)
-POST /subscriptions/:id/next-term-changes (Giai đoạn 3)
+| Mốc | Nguồn đo |
+|---|---|
+| Bắt đầu | Tiện ích: người dùng chọn tình huống / skill được chèn. Connector: lời gọi `bat_dau_tinh_huong` |
+| Các bước | Lời gọi `lay_buoc` của Connector; tiện ích ghi thời điểm |
+| Kết thúc | Người dùng tick đủ checklist và bấm “Dùng kết quả này” (trong tiện ích hoặc trang Kiểm duyệt). Connector: lời gọi `ghi_nhan_ket_qua` |
+| Thời gian thao tác | Tiện ích trừ khoảng tab không được mở/không có thao tác quá 5 phút |
 
-GET  /content/nghe/:id           nội dung gói, chỉ khi có seat hợp lệ
+- Phiên chỉ có Connector (không có tiện ích) tính **thời gian trôi qua**, gắn nhãn độ tin cậy thấp hơn.
+- Chỉ **phiên hoàn tất** mới vào báo cáo. Loại phiên dưới 1 phút hoặc trên 8 giờ.
 
-POST /usage-events
-POST /time-reports     · POST /time-reports/:id/confirm
-GET  /review-items     · POST /review-items/:id/approve | /request-changes
-POST /compliance-events
-GET  /dashboard/:orgId/overview | /staff | /before-after | /compliance
-GET  /dashboard/:orgId/export.(csv|pdf)
+### Báo cáo
+- Mỗi đầu việc chuẩn: **trung vị** thời gian sau so với mốc ban đầu, số phiên (n), số người.
+- Tỷ lệ người đạt ngưỡng Cổng 3 (giảm ≥ 40% trên ít nhất 2/3 đầu việc, theo repo).
+- Ghi rõ **phương pháp đo và nguồn mốc** (tự khai hay bấm giờ) ngay trên báo cáo và PDF xuất ra.
+- Chưa đủ số phiên tối thiểu (ví dụ 5 phiên/đầu việc/người) thì hiện “chưa đủ dữ liệu”, không suy ra số.
+- Giờ tiết kiệm = (mốc − trung vị sau) × số phiên hoàn tất. Ghi là **“ước tính từ thời gian đo”**.
 
-/admin/*                         xác nhận chuyển khoản, kích hoạt, xem đơn
-```
-
-Lỗi trả mã nghiệp vụ có sẵn của bộ tính tiền (`CHUA_CO_GIA`, `NGOAI_KY`, `SEAT_KHONG_HOP_LE`…)
-để giao diện hiện đúng thông báo.
+Giới hạn cần nói với khách: nền tảng chỉ đo phần việc làm trong phiên. Thời gian gom dữ liệu hoặc
+làm việc ngoài trình duyệt không được đo.
 
 ---
 
-## 6. Việc cần làm ở frontend để nối backend
+## 6. Phục vụ skill và hết hạn license (Q8)
 
-1. Tách `tinh-tien.js` thành gói dùng chung (thư mục `shared/` hoặc package nội bộ) mà server
-   `require` được; giữ nguyên bản UMD cho trình duyệt.
-2. `gio-hang.js`: “Tiếp tục thanh toán” gọi `POST /orders` thay vì chỉ chuyển trang.
-3. `thanh-toan.html`: thay bản 3 bước cũ bằng luồng 5 bước (Pha 3 đã ghi trong README), đọc đơn
-   từ API.
-4. Nút “Đăng nhập” trên menu: trang đăng nhập thật; khi đã đăng nhập hiện tên và menu tài khoản.
-5. `site.js`: thay hằng `STAFF`, `QUEUE` và số viết cứng của `bang-dieu-khien.html` bằng dữ liệu
-   từ `/dashboard/*`; giữ bản demo hiện tại ở một đường dẫn riêng (ví dụ `?demo=1`) cho người xem thử.
-6. Thêm một tệp cấu hình `API_BASE` để trỏ staging / production.
+Vấn đề: nếu skill được **nạp nguyên bộ** vào môi trường AI của khách (tệp trong Project, GPT, Gem)
+thì khách giữ được mãi sau khi hết hạn và chia sẻ dễ dàng. Khi đó, việc “ngắt Connector” không còn
+nhiều ý nghĩa.
 
----
+**Đề xuất: tách skill thành hai lớp.**
 
-## 7. Vận hành, bảo mật, tuân thủ
-
-- **Môi trường**: local (Docker Compose: Postgres + API), staging, production. CI chạy
-  `node --test tests/*.test.js` + kiểm thử API + migration trên CSDL trống.
-- **Bí mật**: khoá VNPay / MoMo / email / hoá đơn điện tử để trong kho bí mật của nền tảng host,
-  không commit.
-- **Thanh toán**: webhook kiểm chữ ký, xử lý idempotent theo mã giao dịch, số tiền đối chiếu với
-  đơn trên server; không kích hoạt subscription dựa trên redirect của trình duyệt.
-- **Dữ liệu cá nhân**: site đã viện dẫn Luật 91/2025/QH15. Cần người có chuyên môn pháp lý xác nhận
-  yêu cầu về nơi lưu trữ, thông báo sự cố 72 giờ, quyền truy cập / xoá dữ liệu của chủ thể, và thời
-  hạn lưu 24 tháng của nhật ký tuân thủ trước khi chọn vùng hạ tầng.
-- **Phân quyền**: người dùng thường chỉ thấy số liệu của chính mình; quản lý / reviewer thấy nhóm
-  của mình; owner thấy toàn tổ chức. Kiểm tra quyền ở tầng truy vấn, không chỉ ở giao diện.
-- **Sao lưu**: backup Postgres hằng ngày, thử khôi phục ít nhất một lần trước khi mở bán.
-- **Giám sát**: log có cấu trúc, cảnh báo khi webhook thanh toán lỗi hoặc hàng đợi việc nền tắc.
-
----
-
-## 8. Quyết định cần chốt trước khi viết code
-
-| # | Câu hỏi | Ảnh hưởng | Đề xuất ban đầu |
+| Lớp | Nội dung | Cách giao | Sau khi hết hạn |
 |---|---|---|---|
-| 1 | Số liệu sử dụng lấy từ đâu khi không có máy chủ trung gian? | Toàn bộ Giai đoạn 2 | MVP: người dùng tự khai trên web (đầu việc, giờ, lần bị từ chối). Sau đó cân nhắc tiện ích trình duyệt chỉ gửi siêu dữ liệu |
-| 2 | Hàng chờ Kiểm duyệt lưu gì? | Rủi ro dữ liệu, mô hình `review_items` | Chỉ tiêu đề + checklist + tóm tắt ngắn người dùng tự viết; không lưu đầu ra AI |
-| 3 | Nội dung gói nghề phát hành dạng gì (tệp tải về, trang web, Project/GPT dựng sẵn)? | API `/content`, lưu trữ tệp | Cần nhóm nội dung trả lời |
-| 4 | Thuế GTGT và nhà cung cấp hoá đơn điện tử | Bảng `invoices`, tổng tiền | README đã ghi “chưa chốt, cần kế toán” |
-| 5 | Giá Giảng dạy | Chưa bán được Giảng dạy (`CHUA_CO_GIA`) | Chốt trước Giai đoạn 1 nếu muốn mở bán cùng Mua hàng |
-| 6 | Tên miền và nơi đặt hạ tầng (trong nước / khu vực) | Cookie đăng nhập, tuân thủ | Mua tên miền `.vn` sớm; vùng hạ tầng chờ ý kiến pháp lý (mục 7) |
-| 7 | Gói Gia nhập 0 đ có đi qua luồng thanh toán không? | Luồng đơn hàng | Có — tạo đơn 0 đ để dùng chung logic subscription, bỏ bước cổng thanh toán |
-| 8 | Ai vận hành trang quản trị, đối soát chuyển khoản | Phạm vi `/admin` | Một người vận hành nội bộ, thao tác thủ công ở Giai đoạn 1 |
+| **Vỏ** (cài vào nền tảng) | Vài đoạn hướng dẫn ngắn: “Khi người dùng làm việc thuộc nghề X, gọi Connector để lấy quy trình của tình huống tương ứng.” Không chứa quy trình, quy tắc, mẫu biểu | Mô tả tool của Connector / tiện ích tự chèn | Còn nguyên nhưng vô dụng khi đứng một mình |
+| **Lõi** (Skill Engine) | Quy trình từng bước, quy tắc nghiệp vụ, checklist, mẫu đầu ra, danh mục dữ liệu cấm | Trả **theo từng tình huống, từng bước**, đúng lúc AI cần | Connector trả thông báo hết hạn kèm link gia hạn; không trả lõi |
+
+Biện pháp đi kèm:
+- **Dấu vết theo người dùng**: mỗi bản trả về có biến thể nhỏ về câu chữ hoặc mã ẩn theo user. Nếu
+  bộ skill bị lộ ra ngoài thì truy được nguồn.
+- **Giới hạn tốc độ**: một người lấy nhiều tình huống khác nhau trong thời gian ngắn (dấu hiệu cào
+  dữ liệu) thì hạn chế và cảnh báo.
+- **Cập nhật thường xuyên** (Continuous Skill Upgrade): bản bị sao chép sẽ nhanh cũ. Đây là rào cản
+  thật sự, mạnh hơn mọi cơ chế khoá.
+
+**Khách giữ được gì sau khi hết hạn** (để khớp nguyên tắc “không khoá khách khỏi tài liệu cũ” của
+tài liệu 02):
+- Sổ tay PDF và biểu mẫu đã tải về, theo phiên bản tại thời điểm tải.
+- Mọi kết quả đã làm ra.
+- Xuất dữ liệu dashboard và báo cáo của mình (CSV/PDF) trong **90 ngày** sau hạn, sau đó xoá theo
+  chính sách lưu trữ. Riêng nhật ký tuân thủ giữ đủ 24 tháng.
+- **Doanh nghiệp dùng dịch vụ Tinh chỉnh**: quy tắc và mẫu do khách tự cung cấp là tài sản của khách,
+  xuất trả được. Phần lõi chung của AI Lành Nghề thì không.
+- Thời gian ân hạn 14 ngày: Connector vẫn chạy nhưng nhắc gia hạn ở mỗi phiên.
+
+**Kênh C (GPT/Gem dựng sẵn, giao nguyên bộ)**: chỉ dùng cho **gói Gia nhập 0 đ** với 5 tình huống cố
+định. Chấp nhận là sao chép được, vì đây vốn là nội dung mẫu để thu hút khách.
+
+Tài liệu 02 cần sửa câu về gia hạn thành: *“Không thu hồi những gì đã giao (sổ tay, biểu mẫu, kết quả,
+dữ liệu của khách); skill vận hành qua Connector, các bản cập nhật và dashboard dừng khi hết hạn.”*
 
 ---
 
-## 9. Danh sách việc Giai đoạn 0
+## 7. Mô hình dữ liệu (bản phác)
 
-- [ ] Chốt các quyết định 1, 2, 3, 6, 7 ở mục 8.
-- [ ] Mua tên miền, trỏ site tĩnh sang custom domain.
-- [ ] Tạo thư mục `server/` (hoặc repo riêng) với Fastify + TypeScript + Drizzle, Docker Compose cho Postgres.
-- [ ] Đưa `tinh-tien.js` vào chỗ dùng chung; thêm kiểm thử chứng minh server và trình duyệt ra cùng kết quả.
-- [ ] Migration đầu tiên: users, organizations, memberships, bang_gia_phien_ban, nghe.
-- [ ] Đăng nhập bằng link email chạy trên staging.
-- [ ] CI: kiểm thử bộ tính tiền + kiểm thử API + migration.
-- [ ] Đăng ký tài khoản sandbox VNPay; chuẩn bị thông tin tài khoản nhận chuyển khoản.
+**Danh mục & nội dung**
+- `bang_gia_phien_ban` (bản sao `CAU_HINH` của `tinh-tien.js`), `nghe`.
+- `skill_versions` — nghề, số phiên bản, ngày phát hành, ghi chú thay đổi.
+- `skill_units` — phiên bản × tình huống × bước: nội dung lõi, checklist, mẫu đầu ra.
+- `dau_viec_chuan` — 3 đầu việc chuẩn mỗi nghề, gắn tình huống.
+- `ky_nang` + `tinh_huong_ky_nang` — danh mục kỹ năng cho Skill Map (chờ nhóm nội dung định nghĩa).
+
+**Tài khoản & quyền**
+- `users` (email, số điện thoại đã xác minh), `organizations`, `memberships` (owner, admin, reviewer, member).
+- `devices` — thiết bị tin cậy của Web App và tiện ích.
+- `oauth_clients`, `oauth_grants`, `tokens` — grant Connector theo nền tảng (claude, chatgpt…), thu hồi được.
+- `otp_challenges` — kênh (zalo, sms), trạng thái, số lần thử.
+- `entitlements` — suy ra từ subscription: user/seat × nghề × hạn dùng.
+
+**Bán hàng** (giữ như bản 1, bám `tinh-tien.js`)
+- `subscriptions`, `seat_groups`, `seat_group_nghe`, `seats`, `seat_assignments`, `pending_changes`.
+- `orders` (bất biến, lưu nguyên đối tượng `don`), `payments`, `invoices`.
+
+**Đo lường**
+- `baselines` — user × đầu việc chuẩn × số phút × nguồn (`tu_khai`, `bam_gio`) × người xác nhận.
+- `work_sessions` — user, tình huống, kênh (`connector`, `extension`), bắt đầu, kết thúc, phút thao tác, trạng thái, độ tin cậy.
+- `usage_events` — sự kiện thô (grant, gọi tool, chọn tình huống…), không nội dung.
+- `review_items`, `review_log` — tiêu đề, checklist, người duyệt; không lưu đầu ra AI.
+- `compliance_events` — loại dữ liệu cấm bị phát hiện tại máy, kênh, hành động; giữ 24 tháng.
+- `audit_log`.
+
+---
+
+## 8. API (bản phác)
+
+```
+# Web App & tiện ích
+POST /auth/login · /auth/otp/verify · /auth/logout · GET /me
+GET/DELETE /me/devices · GET/DELETE /me/grants
+POST /quote · /orders · /orders/:id/pay · /webhooks/vnpay
+GET  /subscriptions/:id · POST /subscriptions/:id/seats/:ma/assign
+POST /orgs/:id/invites · DELETE /orgs/:id/members/:userId
+POST /baselines · /baselines/:id/confirm
+POST /sessions (bắt đầu) · PATCH /sessions/:id (bước, kết thúc) · POST /compliance-events
+GET  /dashboard/me · /dashboard/org/:id/(overview|staff|before-after|review|compliance)
+GET  /dashboard/org/:id/export.(csv|pdf)
+
+# OAuth 2.1 cho Connector (authorization code + PKCE, dynamic client registration)
+GET  /.well-known/oauth-authorization-server · /oauth/authorize · POST /oauth/token · /oauth/register
+
+# Connector (remote MCP) — tham số chỉ là mã
+tool danh_sach_tinh_huong(nghe)
+tool bat_dau_tinh_huong(tinh_huong)          → quy trình tổng quát + mã phiên
+tool lay_buoc(ma_phien, buoc)                → hướng dẫn + mẫu cho bước đó
+tool lay_checklist(ma_phien)
+tool ghi_nhan_ket_qua(ma_phien, checklist_da_tick[])
+```
+
+---
+
+## 9. Giai đoạn
+
+### Giai đoạn 0 — Chuẩn bị (2 tuần)
+- [ ] Chọn nền tảng cho Connector đầu tiên (khảo sát 2 doanh nghiệp + nhóm cá nhân pilot đang dùng gói AI nào).
+- [ ] Mua tên miền; trỏ site tĩnh sang.
+- [ ] Đăng ký Zalo OA + mẫu ZNS OTP; SMS brandname dự phòng.
+- [ ] Nhóm nội dung tách skill Mua hàng thành vỏ / lõi theo tình huống và bước (mục 6); định nghĩa 3 đầu việc chuẩn.
+- [ ] Dựng `server/`: Fastify + TypeScript + Postgres (Docker Compose), CI chạy `node --test` + kiểm thử API.
+- [ ] Đưa `tinh-tien.js` vào chỗ dùng chung; kiểm thử chứng minh server và trình duyệt ra cùng số.
+- [ ] Sửa tài liệu 02 theo repo (mục 1, Q9–15) và câu về gia hạn (mục 6).
+
+### Giai đoạn 1 — Pilot cá nhân + doanh nghiệp (6–8 tuần)
+- Tài khoản, OTP Zalo, thiết bị tin cậy; tổ chức, mời thành viên, gán/đổi seat.
+- Đơn hàng + thanh toán chuyển khoản (admin xác nhận), VNPay nếu kịp; đơn 0 đ cho Gia nhập.
+- License Server + OAuth + Connector MCP cho **một nền tảng**, nghề Mua hàng.
+- Tiện ích trình duyệt bản 1: đăng nhập, chọn tình huống, đo phiên việc, kiểm CCCD / số tài khoản tại máy.
+- Mốc ban đầu (tự khai + bấm giờ), Personal Dashboard và các màn hình Business: Tổng quan, Theo nhân sự,
+  Đo trước–sau. `bang-dieu-khien.html` đọc API, bản demo giữ ở `?demo=1`.
+- Trang quản trị nội bộ tối thiểu.
+
+### Giai đoạn 2 — Hoàn thiện Business
+- Kiểm duyệt, nhật ký tuân thủ, xuất PDF/CSV, báo cáo quý.
+- Skill Map (sau khi có danh mục kỹ năng), AI Skill Score (sau khi chốt công thức).
+- Phát hiện bất thường cho chống chia sẻ.
+
+### Giai đoạn 3 — Mở rộng
+- Connector cho nền tảng thứ hai trở đi; agent Microsoft 365 Copilot.
+- Mua thêm giữa kỳ, gia hạn, `dangKyKySau`; MoMo; hoá đơn điện tử tự động; luồng thanh toán 5 bước (Pha 3).
+
+---
+
+## 10. Còn mở
+
+| Câu hỏi | Ai trả lời |
+|---|---|
+| Nền tảng Connector đầu tiên | Kết quả khảo sát pilot |
+| Thuế GTGT, nhà cung cấp hoá đơn điện tử | Kế toán |
+| Giá Giảng dạy (`CHUA_CO_GIA`) | Nhóm sản phẩm |
+| Nơi đặt hạ tầng, nghĩa vụ theo Luật 91/2025/QH15 (cả với số điện thoại, dữ liệu phiên việc) | Tư vấn pháp lý |
+| Danh mục kỹ năng từng nghề, công thức AI Skill Score | Nhóm nội dung |
+| Doanh nghiệp pilot có cho cài tiện ích trình duyệt không | Khảo sát pilot |
