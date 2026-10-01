@@ -26,7 +26,7 @@
     // Thứ tự khai báo = thứ tự danh mục (dùng khi hai nghề cùng giá).
     // dangBan = false: gói đang đóng gói, giá là giá đề xuất. tinhChinhDN = null: chưa có giá niêm yết, cần báo giá.
     nghe: [
-      { id: "hanh-chinh", ten: "Hành chính", dangBan: false, goiNghe: 590000, tinhChinh: 600000, tinhChinhDN: null },
+      { id: "hanh-chinh", ten: "Hành chính", dangBan: false, goiNghe: 690000, tinhChinh: 800000, tinhChinhDN: null },
       { id: "nhan-su", ten: "Nhân sự", dangBan: false, goiNghe: 690000, tinhChinh: 800000, tinhChinhDN: 3500000 },
       { id: "mua-hang", ten: "Mua hàng", dangBan: true, goiNghe: 690000, tinhChinh: 800000, tinhChinhDN: 3000000 },
       { id: "ke-toan", ten: "Kế toán – Tài chính", dangBan: false, goiNghe: 790000, tinhChinh: 900000, tinhChinhDN: 4000000 },

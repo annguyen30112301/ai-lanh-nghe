@@ -203,7 +203,7 @@ test("Không hồi tố: đơn cũ giữ nguyên số tiền và bậc sau khi l
 test("Thêm nghề giữa kỳ: nối tiếp cuối nhóm, không xếp lại nghề cũ; tính cho mọi seat của nhóm", () => {
   let r = T.muaMoi({ loaiKhach: "DOANH_NGHIEP", ngayBatDau: "2027-01-01", nhomSeat: [{ ma: "VP", ten: "VP", seat: 20, nghe: ["hanh-chinh"] }] });
   r = T.muaThem(r.subscription, { ngayHieuLuc: "2027-07-01", themSeat: [{ maNhom: "VP", soSeat: 5 }], themNghe: [{ maNhom: "VP", nghe: ["marketing", "quan-ly"] }] });
-  // Hành chính (590k) vẫn #1 dù Quản lý đắt hơn; 2 nghề mới xếp giá cao → thấp.
+  // Hành chính (690k) vẫn #1 dù Quản lý đắt hơn; 2 nghề mới xếp giá cao → thấp.
   assert.deepEqual(r.subscription.nhomSeat[0].nghe.map((g) => [g.ngheId, g.thuTu]), [["hanh-chinh", 1], ["quan-ly", 2], ["marketing", 3]]);
   assert.equal(r.don.bacQuyMo.tyLe, 10); // 25 seat
   assert.deepEqual(r.don.items.map((d) => [d.ngheId, d.seat, d.thuTu]), [["hanh-chinh", 5, 1], ["quan-ly", 25, 2], ["marketing", 25, 3]]);
