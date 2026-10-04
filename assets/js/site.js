@@ -10,6 +10,21 @@
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
   function text(el) { return (el.textContent || '').replace(/\s+/g, ' ').trim(); }
 
+  /* ── mở video nhúng bằng data-video-open ── */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-video-open]');
+    if (!btn) return;
+    var box = document.getElementById(btn.getAttribute('data-video-open'));
+    if (!box) return;
+    var mo = box.hidden;
+    box.hidden = !mo;
+    btn.setAttribute('aria-expanded', String(mo));
+    var v = box.querySelector('video');
+    if (!v) return;
+    if (mo) { box.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); v.play().catch(function () {}); }
+    else v.pause();
+  });
+
   /* ── điều hướng bằng data-go ── */
   document.addEventListener('click', function (e) {
     var el = e.target.closest('[data-go]');
