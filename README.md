@@ -1,5 +1,8 @@
 # AI Lành Nghề — website
 
+> **Bản cũ (giai đoạn 1), đã đóng băng nội dung từ 14/10/2026** – chỉ giữ để đối chiếu với báo cáo; mọi trang có banner dẫn sang bản mới.
+> Site mới (website + Web App): https://ai-lanh-nghe-app.nghoangan-bt96.workers.dev/ · mã nguồn: https://github.com/annguyen30112301/ai-lanh-nghe-app
+
 Website tĩnh dựng từ bản thiết kế *AI Lành Nghề · UI mockup 2.8* trên Claude Design.
 Thuần HTML + CSS + JavaScript, không cần Node.js, không cần bước build.
 
