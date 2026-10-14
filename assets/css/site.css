@@ -14,7 +14,7 @@ body { margin: 0; }
 .sitebody { margin: 0 auto; max-width: 1180px; min-height: 100vh; background: var(--color-bg); }
 .dashboard { display: flex; min-height: 100vh; align-items: stretch; }
 .dashboard > aside { width: 266px; flex: 0 0 auto; border-right: 1px solid var(--color-divider);
-  background: var(--color-neutral-100); padding: 22px 0; position: sticky; top: 0; height: 100vh; overflow: auto; }
+  background: var(--color-neutral-100); padding: 22px 0; position: sticky; top: var(--banner-h, 0px); height: calc(100vh - var(--banner-h, 0px)); overflow: auto; }
 .dashboard > main { flex: 1 1 0; min-width: 0; padding: 28px 32px 60px; }
 [data-go] { cursor: pointer; }
 /* logo ngang ở chân trang trang chủ — slogan giữ kiểu in hoa giãn chữ như trên menu */
@@ -385,4 +385,24 @@ body { padding-bottom: 76px; }
 .u290{display: flex;gap: 12px;font-size: 13px;color: var(--color-neutral-800)}
 .u291{width: 104px;flex: 0 0 auto;color: var(--color-neutral-600);font-variant-numeric: tabular-nums}
 
-#chung-toi-la-ai, #vi-sao-chon, #lien-he, #faq { scroll-margin-top: 90px; }
+#chung-toi-la-ai, #vi-sao-chon, #lien-he, #faq { scroll-margin-top: calc(90px + var(--banner-h, 0px)); }
+
+/* ── banner “bản website cũ” (chèn bằng site.js) ── */
+.old-site-banner { position: sticky; top: 0; z-index: 1000; background: #5A3B0A; color: #fff;
+  font-family: 'Be Vietnam Pro', system-ui, sans-serif; font-size: 16px; line-height: 1.35; }
+.old-site-banner__in { max-width: 1180px; margin: 0 auto; padding: 7px 16px; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center; gap: 8px 18px; }
+.old-site-banner__text { margin: 0; font-size: 16px; }
+.old-site-banner__link { flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 36px; box-sizing: border-box;
+  padding: 0 16px; border: 2px solid #fff; border-radius: 999px; color: #fff; font-weight: 600;
+  text-decoration: none; white-space: nowrap; }
+.old-site-banner__link:hover { background: #fff; color: #5A3B0A; }
+.old-site-banner__link:focus-visible { outline: 3px solid #FFD27A; outline-offset: 2px; }
+/* đẩy các khối sticky của site cũ xuống dưới banner (header dùng style inline nên cần !important) */
+.sitebody > header.nav { top: var(--banner-h, 0px) !important; }
+@media (max-width: 720px) {
+  /* nút chạy nối sau chữ để banner gọn (chữ giữ nguyên, không rút gọn) */
+  .old-site-banner__in { display: block; padding: 6px 16px 8px; }
+  .old-site-banner__text { display: inline; margin-right: 8px; }
+  .old-site-banner__link { display: inline-flex; min-height: 30px; padding: 0 12px; margin-top: 4px; vertical-align: middle; }
+}

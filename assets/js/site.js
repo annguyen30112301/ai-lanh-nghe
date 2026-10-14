@@ -10,6 +10,46 @@
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
   function text(el) { return (el.textContent || '').replace(/\s+/g, ' ').trim(); }
 
+  /* ── banner “bản website cũ” → trang tương ứng ở site mới ── */
+  var NEW_SITE = 'https://ai-lanh-nghe-app.nghoangan-bt96.workers.dev';
+  // Trang cũ → trang mới. Site mới thêm trang thì chỉ sửa ở đây.
+  var NEW_PAGES = {
+    'index.html': '/',
+    'goi-nghe.html': '/goi-nghe/',
+    'nghe-mua-hang.html': '/goi-nghe/',
+    'nghe-giang-day.html': '/goi-nghe/',
+    'bang-gia.html': '/bang-gia/',
+    'gio-hang.html': '/bang-gia/',
+    'do-gio.html': '/bang-gia/',
+    'thanh-toan.html': '/bang-gia/',
+    'dung-thu.html': '/app/dang-nhap/',
+    'an-toan.html': '/an-toan/',
+    'tai-nguyen.html': '/cach-hoat-dong/',
+    'bang-dieu-khien.html': '/app/dang-nhap/?demo=doanh-nghiep'
+  };
+
+  function initOldSiteBanner() {
+    var page = location.pathname.split('/').pop() || 'index.html';
+    var bar = document.createElement('div');
+    bar.className = 'old-site-banner';
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Thông báo phiên bản');
+    bar.innerHTML = '<div class="old-site-banner__in">' +
+      '<p class="old-site-banner__text"><span>Đây là bản website cũ (trước góp ý ngày 09/10/2026).</span> ' +
+      '<span>Sản phẩm đã chuyển sang Web App.</span></p>' +
+      '<a class="old-site-banner__link">Xem bản mới →</a></div>';
+    bar.querySelector('a').href = NEW_SITE + (NEW_PAGES[page] || '/');
+    document.body.insertBefore(bar, document.body.firstChild);
+
+    function setHeight() {
+      document.documentElement.style.setProperty('--banner-h', bar.offsetHeight + 'px');
+    }
+    setHeight();
+    if (window.ResizeObserver) new ResizeObserver(setHeight).observe(bar);
+    else window.addEventListener('resize', setHeight);
+  }
+  initOldSiteBanner();
+
   /* ── mở video nhúng bằng data-video-open ── */
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('[data-video-open]');

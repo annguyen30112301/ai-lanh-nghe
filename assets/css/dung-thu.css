@@ -191,7 +191,7 @@ p.is-changed, .dt-a.is-changed, .dt-summary.is-changed { padding: 4px 8px; borde
 /* từ bước 2: gọn phần đầu trang để nội dung việc lên sớm hơn */
 .dt[data-step]:not([data-step="chon"]) .dt-lead { display: none; }
 @media (min-width: 901px) {
-  .dt-review > .dt-pane:last-child { position: sticky; top: 92px; }
+  .dt-review > .dt-pane:last-child { position: sticky; top: calc(92px + var(--banner-h, 0px)); }
 }
 @media (max-width: 900px) {
   .dt-bench, .dt-review, .dt-done { grid-template-columns: minmax(0, 1fr); }

@@ -4,6 +4,20 @@
 > Site mới (website + Web App, đã chạy): **https://ai-lanh-nghe-app.nghoangan-bt96.workers.dev/** – repo `ai-lanh-nghe-app`
 > Lập ngày 14/10/2026, cập nhật cùng ngày sau khi đối chiếu repo cũ, repo `ai-lanh-nghe-app` (commit `f5cfd22`) và các nhánh. Đọc hết file trước khi sửa.
 
+## 0. Trạng thái (14/10/2026)
+
+**Đã làm** trên nhánh `claude/practical-bell-45ns68` (chưa gộp `main`, nên GitHub Pages chưa đổi):
+- Banner: JS ở `assets/js/site.js` (`NEW_SITE`, `NEW_PAGES`, `initOldSiteBanner`), CSS cuối `assets/css/site.css`. Banner `sticky` trên cùng; JS đo chiều cao thật vào biến `--banner-h` (theo dõi bằng `ResizeObserver`).
+- Khối sticky được đẩy xuống theo `--banner-h`: header (`!important` vì style inline), thanh bên bảng điều khiển, tóm tắt giỏ hàng (`gio-hang.css`), khung duyệt ở Bàn thử việc (`dung-thu.css`), `scroll-margin-top` của các neo.
+- README: thêm 2 dòng báo bản cũ + link site mới, repo mới.
+- Đã kiểm tra bằng Chromium (Playwright) cả 12 trang ở 1440px và 390px: banner là phần tử đầu `<body>`, link đúng bảng 2.2, header nằm ngay dưới banner, không lỗi JS, phím Tab tới nút được và có viền focus. Test tính tiền 26/26 qua.
+
+**Lệch so với yêu cầu:**
+- Ở 390px banner cao 91px (3 dòng, nút nối sau chữ), không phải 2 dòng: chữ phải giữ nguyên và ≥ 16px nên không gói vào 2 dòng được. Desktop cao 50px.
+- `index.html` ở 390px có cuộn ngang khoảng 8px – **có sẵn từ trước** (khối `.u100` rộng 398px), không do banner; không sửa vì site cũ đóng băng nội dung.
+
+**Còn lại:** gộp nhánh vào `main` rồi kiểm tra link thật ở cửa sổ ẩn danh (mục 4); dọn nhánh (2.4) chờ Royan đồng ý; việc ngoài repo (mục 5). Khi site mới có thêm trang, chỉ sửa `NEW_PAGES` trong `site.js`.
+
 ## 1. Bối cảnh
 
 - Site cũ là bản đã nộp kèm báo cáo giai đoạn 1 (link nằm trong Phụ lục). Sau buổi góp ý 09/10, nhóm làm lại toàn bộ website và chuyển sản phẩm sang dạng **Web App** ở repo `ai-lanh-nghe-app`.

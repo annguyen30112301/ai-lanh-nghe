@@ -40,7 +40,7 @@
 @media (max-width: 960px) { .gh-layout { grid-template-columns: minmax(0, 1fr); } }
 .gh-editor { display: grid; gap: 16px; align-content: start; min-width: 0; }
 .gh-summary { display: grid; gap: 16px; align-content: start; min-width: 0; padding: 22px; border-radius: 14px; background: var(--color-neutral-100);
-  border: 1px solid var(--color-divider); box-shadow: var(--shadow-sm); position: sticky; top: 88px; }
+  border: 1px solid var(--color-divider); box-shadow: var(--shadow-sm); position: sticky; top: calc(88px + var(--banner-h, 0px)); }
 @media (max-width: 960px) { .gh-summary { position: static; padding: 18px; } }
 .gh-sum-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 14px; }
 .gh-h { margin: 0; font-size: 22px !important; font-weight: 600; color: var(--color-text); }
