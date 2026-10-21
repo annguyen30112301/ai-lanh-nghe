@@ -237,16 +237,16 @@
 
   /* kiểm duyệt đầu ra AI */
   var QUEUE = [
-    { title: 'Bảng so sánh 3 báo giá — gói thầu bao bì Q4', staff: 'Nguyễn Thị Hoa', type: 'So sánh báo giá', time: '05/09 08:12', tool: 'Gemini (gói doanh nghiệp)',
+    { title: 'Bảng so sánh 3 báo giá — gói thầu bao bì Q4', staff: 'Nguyễn Thị Hoa', type: 'So sánh báo giá', time: '05/09 08:12', tool: 'Gemini (key công ty)',
       excerpt: 'Bảng tổng hợp 4 nhà cung cấp bao bì giấy, đơn giá theo tấn, thời gian giao, điều kiện thanh toán và tổng chi phí quy đổi 12 tháng. Đề xuất: NCC Tân Á — thấp hơn 6,2% so với giá trung bình.',
       checks: ['Số liệu khớp với bản báo giá gốc (PDF)', 'Không thiếu nhà cung cấp nào trong danh sách mời', 'Đơn vị tiền tệ và VAT nhất quán giữa các dòng', 'Không chứa dữ liệu thuộc danh mục cấm nạp'] },
-    { title: 'Thư đàm phán giảm 5% — NCC Bao bì Tân Á', staff: 'Trần Văn Khoa', type: 'Thư gửi nhà cung cấp', time: '05/09 07:40', tool: 'Copilot (tài khoản công ty)',
+    { title: 'Thư đàm phán giảm 5% — NCC Bao bì Tân Á', staff: 'Trần Văn Khoa', type: 'Thư gửi nhà cung cấp', time: '05/09 07:40', tool: 'OpenAI (key công ty)',
       excerpt: 'Thư viện dẫn sản lượng cam kết cả năm, đề nghị giảm 5% đơn giá kèm điều kiện thanh toán 15 ngày, giữ nguyên các điều khoản còn lại của hợp đồng khung.',
       checks: ['Cam kết về giá và thời hạn đúng thẩm quyền người gửi', 'Không hứa điều khoản ngoài hợp đồng mẫu', 'Giọng văn phù hợp quan hệ nhà cung cấp hiện có'] },
-    { title: 'Tóm tắt điều khoản hợp đồng vận chuyển Đông Phương', staff: 'Lê Minh Tâm', type: 'Rà soát hợp đồng', time: '04/09 17:05', tool: 'Claude (bậc miễn phí)',
+    { title: 'Tóm tắt điều khoản hợp đồng vận chuyển Đông Phương', staff: 'Lê Minh Tâm', type: 'Rà soát hợp đồng', time: '04/09 17:05', tool: 'Claude qua OpenRouter',
       excerpt: 'Tóm tắt 6 điều khoản có rủi ro: giới hạn trách nhiệm hàng hư hỏng, điều kiện phạt chậm giao, điều khoản điều chỉnh giá theo giá dầu.',
       checks: ['Đối chiếu đúng điều khoản gốc, không suy diễn', 'Nêu rõ phần rủi ro pháp lý', 'Có ghi chú “cần pháp chế xem lại”'] },
-    { title: 'Báo cáo mua hàng tuần 36', staff: 'Phạm Thu Hà', type: 'Báo cáo định kỳ', time: '04/09 15:22', tool: 'Gemini (gói doanh nghiệp)',
+    { title: 'Báo cáo mua hàng tuần 36', staff: 'Phạm Thu Hà', type: 'Báo cáo định kỳ', time: '04/09 15:22', tool: 'Gemini (key công ty)',
       excerpt: 'Tổng giá trị đơn đặt hàng 4,2 tỷ; 3 đơn chậm giao; 2 nhà cung cấp vượt hạn mức tín dụng nội bộ.',
       checks: ['Số tổng khớp với dữ liệu ERP', 'Ghi rõ nguồn cho từng bảng', 'Không đưa dữ liệu giá hợp đồng vào phần gửi ngoài phòng'] }
   ];
