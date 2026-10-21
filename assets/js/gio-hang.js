@@ -272,7 +272,7 @@
   }
 
   var GHI_CHU = '<ul class="gh-notes">' +
-    '<li><b>Giá chưa gồm phí ChatGPT, Claude, Gemini, Copilot.</b> Bạn dùng tài khoản AI của mình và trả trực tiếp cho nhà cung cấp nền tảng.</li>' +
+    '<li><b>Giá chưa gồm phí dùng AI (OpenRouter, Gemini, OpenAI).</b> Bạn kết nối tài khoản AI của mình trên web app và trả trực tiếp cho nhà cung cấp.</li>' +
     '<li>Tinh chỉnh trả một lần, không thu lại khi gia hạn. Gia hạn không tự trừ tiền: trước ngày hết hạn bạn nhận thông báo và tự xác nhận.</li>' +
     '<li>Mua thêm nghề hoặc seat giữa kỳ tính theo số ngày còn lại và hết hạn cùng ngày.</li>' +
     '<li>Thuế GTGT: đang chờ kế toán xác định cách áp dụng; bản mẫu chưa tính thuế.</li>' +
