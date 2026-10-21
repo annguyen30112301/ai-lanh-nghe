@@ -1,5 +1,7 @@
 # Bàn giao: gắn banner chuyển sang website mới cho site cũ
 
+> **Hết hiệu lực từ 21/10/2026:** banner đã gỡ. Site này là website giới thiệu, nút Dùng thử dẫn sang Web App (xem README).
+
 > Repo: https://github.com/annguyen30112301/ai-lanh-nghe (nhánh `main`) · Site cũ: https://annguyen30112301.github.io/ai-lanh-nghe/
 > Site mới (website + Web App, đã chạy): **https://ai-lanh-nghe-app.nghoangan-bt96.workers.dev/** – repo `ai-lanh-nghe-app`
 > Lập ngày 14/10/2026, cập nhật cùng ngày sau khi đối chiếu repo cũ, repo `ai-lanh-nghe-app` (commit `f5cfd22`) và các nhánh. Đọc hết file trước khi sửa.
