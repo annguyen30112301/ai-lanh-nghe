@@ -67,6 +67,16 @@
     return ds;
   }
 
+  // Thanh toán và cấp license nằm ở Web App (/dat-mua/), giá tính lại ở đó. Web App hiện chỉ bán nghề Mua hàng.
+  var APP = 'https://ai-lanh-nghe-app.nghoangan-bt96.workers.dev';
+  function linkDatMua(g) {
+    if (g.loai === 'CA_NHAN') {
+      return APP + '/dat-mua/?goi=personal' + (g.caNhan.tinhChinh.indexOf('mua-hang') >= 0 ? '&tinh_chinh=1' : '');
+    }
+    var seat = g.dn.nhom.reduce(function (a, n) { return a + (n.nghe.indexOf('mua-hang') >= 0 ? (+n.seat || 0) : 0); }, 0);
+    return APP + '/dat-mua/?goi=business' + (seat > 0 ? '&seat=' + seat : '');
+  }
+
   function soNghe(g) {
     return g.loai === 'CA_NHAN' ? g.caNhan.nghe.length : g.dn.nhom.reduce(function (a, n) { return a + n.nghe.length; }, 0);
   }
@@ -411,7 +421,7 @@
         h += hoaDonHtml(don, g);
       }
       var coThe = !!don && !loi;
-      h += '<div class="gh-actions"><a class="gh-btn gh-btn--primary' + (coThe ? '' : ' is-disabled') + '" href="thanh-toan.html"' + (coThe ? '' : ' aria-disabled="true" tabindex="-1"') + '>Tiếp tục thanh toán →</a>' +
+      h += '<div class="gh-actions"><a class="gh-btn gh-btn--primary' + (coThe ? '' : ' is-disabled') + '" href="' + esc(linkDatMua(g)) + '"' + (coThe ? '' : ' aria-disabled="true" tabindex="-1"') + '>Tiếp tục thanh toán →</a>' +
         '<a class="gh-link" href="bang-gia.html">Xem lại bảng giá</a></div>';
       h += GHI_CHU;
       elTom.innerHTML = h;

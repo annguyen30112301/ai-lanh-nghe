@@ -1,7 +1,7 @@
 # AI Lành Nghề — website
 
-> **Bản cũ (giai đoạn 1), đã đóng băng nội dung từ 14/10/2026** – chỉ giữ để đối chiếu với báo cáo; mọi trang có banner dẫn sang bản mới.
-> Site mới (website + Web App): https://ai-lanh-nghe-app.nghoangan-bt96.workers.dev/ · mã nguồn: https://github.com/annguyen30112301/ai-lanh-nghe-app
+> Website giới thiệu. Phần dùng thật (đăng nhập, tài khoản demo, mua gói, license) nằm ở **Web App**: https://ai-lanh-nghe-app.nghoangan-bt96.workers.dev/ · mã nguồn: https://github.com/annguyen30112301/ai-lanh-nghe-app
+> Nút **Dùng thử** (thanh nổi mọi trang, các nút thử của nghề Mua hàng, “Bắt đầu miễn phí”) và nút **Đăng nhập** trên header dẫn sang `/app/dang-nhap/` của Web App; “Tiếp tục thanh toán” ở Giỏ hàng dẫn sang `/dat-mua/`. Địa chỉ Web App: `APP` trong `assets/js/gio-hang.js` và các `href` trong HTML. Nghề Giảng dạy: “Sắp ra mắt”.
 
 Website tĩnh dựng từ bản thiết kế *AI Lành Nghề · UI mockup 2.8* trên Claude Design.
 Thuần HTML + CSS + JavaScript, không cần Node.js, không cần bước build.
